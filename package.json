@@ -1,0 +1,19 @@
+{
+  "name": "my-portfolio",
+  "version": "0.1.0",
+  "devDependencies": {
+    "del": "^2.1.0",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-cache": "^0.4.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-image-resize": "^0.7.1",
+    "gulp-imagemin": "^2.4.0",
+    "gulp-jshint": "^1.12.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-notify": "^2.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-ruby-sass": "^2.0.5",
+    "gulp-uglify": "^1.5.1"
+  }
+}
