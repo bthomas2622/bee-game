@@ -30,11 +30,6 @@ var beeTypes = [
 //bee chosen for adventure, right now just chosen in code
 var chosenBee = beeTypes[1];
 
-//
-function createHive(map, foodplaces) {
-	
-}
-
 //beemodel is the knockout observable model object that will dynamically drive my in game statistics
 var beeModel = function(data){
 	this.species = ko.observable(data.species);
@@ -61,7 +56,21 @@ var controller = function () {
 		var ageHolder = self.bee()[0].age();
 		var ageHolder = ageHolder + 1;
 		self.bee()[0].age(ageHolder); 
+		for (j=0; j<1; j++){
+			createHive();
+		}
 	};
+
+	function createHive() {
+		var table = $('<table></table>').addClass('flowerfield');
+		var color
+		for(i=0; i<10; i++){
+		    var row = $('<td></td>').addClass('flower').text(i);
+		    console.log(table);
+		    table.append(row);
+		}
+		$('#flowerfield').append(table);
+	}
 };
 
 //apply the knockout observable properties to the controller, essential for dynamic DOM, etc.

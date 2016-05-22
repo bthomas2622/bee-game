@@ -53,6 +53,15 @@ div#social {
   font-size: 25px;
 }
 
+td {
+	padding: 10px;
+	color: transparent;
+} 
+
+.flower {
+	background-color: red;
+}
+
 /* MEDIA QUERIES */
 
 @media screen and (max-width: 540px) {
@@ -70,5 +79,6 @@ div#social {
 		font-size: 16px;
 	}
 }
+
 
 
