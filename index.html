@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1"> 
         <title>Bee Game</title>
-        <script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+        <script type="text/javascript" src="js/jquery-1.12.4.js"></script>
         <script type="text/javascript" src="js/bootstrap.js"></script>
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/stylesheet.css">
@@ -23,18 +23,22 @@
             </div>
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-4">
                     <ul data-bind="foreach: bee">
+                        <li>Species: <span data-bind="text: species, click: $parent.listClick"></span></li>
                         <li>Energy: <span data-bind="text: maxEnergy"></span></li>
-                        <li>Pollen Count</li>
-                        <li>Age</li>
-                        <li>Armor</li>
-                        <li>Speed</li>
-                        <li>Sting Strength</li>
-                        <li>Honey Produced</li>
-                        <li>Beeswax Produced</li>
-                        <li>Royal Jelly Produced</li>
+                        <li>Pollen Count: <span data-bind="text: pollenCount"></span></li>
+                        <li>Age: <span data-bind="text: age"></span></li>
+                        <li>Armor: <span data-bind="text: armor"></span></li>
+                        <li>Speed: <span data-bind="text: speed"></span></li>
+                        <li>Sting Strength: <span data-bind="text: stingStrength"></span></li>
+                        <li>Honey Produced: <span data-bind="text: honeyCount"></span></li>
+                        <li>Beeswax Produced: <span data-bind="text: beeswaxCount"></span></li>
+                        <li>Royal Jelly Produced: <span data-bind="text: royalJellyCount"></span></li>
                     </ul>
+                </div>
+                <div class="col-md-4">
+
                 </div>
             </div>
         </div>
