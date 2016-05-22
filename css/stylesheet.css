@@ -4,8 +4,12 @@
 
 body {
 	background-color: #383838;
+	color: white;
 }
 
+ul li {
+	list-style: none;
+}
 
 [class*="zocial-"]:before {
 	color: black;
@@ -13,10 +17,6 @@ body {
   	font-family: 'zocial', sans-serif;
   	width: 100%;
   	font-size: 20px;
-}
-
-h1 {
-	color: white;
 }
 
 div#social a {

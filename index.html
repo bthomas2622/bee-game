@@ -19,14 +19,26 @@
             </div>
         </div>
             <div class="row">
-                <div class="col-md-12 hero">
+                <div class="col-md-12">
             </div>
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>Hello World</h1>
+                    <ul data-bind="foreach: bee">
+                        <li>Energy: <span data-bind="text: maxEnergy"></span></li>
+                        <li>Pollen Count</li>
+                        <li>Age</li>
+                        <li>Armor</li>
+                        <li>Speed</li>
+                        <li>Sting Strength</li>
+                        <li>Honey Produced</li>
+                        <li>Beeswax Produced</li>
+                        <li>Royal Jelly Produced</li>
+                    </ul>
                 </div>
             </div>
         </div>
+        <script src="js/knockout-3.2.0.js"></script>
+        <script src="js/app.js"></script>
     </body>
 </html>
