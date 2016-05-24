@@ -56,17 +56,29 @@ var controller = function () {
 		var ageHolder = self.bee()[0].age();
 		var ageHolder = ageHolder + 1;
 		self.bee()[0].age(ageHolder); 
-		for (j=0; j<1; j++){
+		for (j=0; j<7; j++){
 			createHive();
 		}
 	};
 
+	var rdata = '%red%';
+	var gdata = '%green%';
+	var bdata = '%blue%';
+	var formattedrgb; 
+
 	function createHive() {
 		var table = $('<table></table>').addClass('flowerfield');
-		var color
 		for(i=0; i<10; i++){
-		    var row = $('<td></td>').addClass('flower').text(i);
-		    console.log(table);
+			var rgb = '<td style="background-color:rgb(%red%,%green%,%blue%);"></td>';
+			var r = Math.floor(255*Math.random()).toString();
+			var g = Math.floor(255*Math.random()).toString(); 
+			var b = Math.floor(255*Math.random()).toString();
+			var formattedrgb = rgb.replace(rdata, r);
+			var formattedrgb = formattedrgb.replace(gdata, g);  
+			var formattedrgb = formattedrgb.replace(bdata, b);    
+		    var row = $(formattedrgb).text(i);
+		    //var row = $('<td style="background-color:rgb('r','g','b');"></td>').addClass('flower').text(i);
+		    console.log(r);
 		    table.append(row);
 		}
 		$('#flowerfield').append(table);
