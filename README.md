@@ -1,7 +1,7 @@
-Ben Thomas Bee vs World Game 
+Ben Thomas Bee Game 
 ===============================
 
-This portolio is a mix projects I completed for my Udacity Front End Web Developer Nanodegree certification and personal projects.
+This project...
 
 # **About**
 

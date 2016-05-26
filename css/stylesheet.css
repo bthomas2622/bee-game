@@ -58,8 +58,13 @@ td {
 	color: transparent;
 } 
 
+.flowerfield {
+	width: 500px;
+}
+
 .flower {
-	background-color: red;
+	height: 50px;
+	border: 2px dotted black;
 }
 
 /* MEDIA QUERIES */
