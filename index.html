@@ -23,7 +23,7 @@
             </div>
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-12">
                     <ul data-bind="foreach: bee">
                         <li>Species: <span data-bind="text: species, click: $parent.listClick"></span></li>
                         <li>Energy: <span data-bind="text: maxEnergy"></span></li>
@@ -37,8 +37,9 @@
                         <li>Royal Jelly Produced: <span data-bind="text: royalJellyCount"></span></li>
                     </ul>
                 </div>
-                <div class="col-md-8" id="flowerfield">
-
+            </div>
+            <div class="row">
+                <div class="col-md-12" id="flowerfield">
                 </div>
             </div>
         </div>

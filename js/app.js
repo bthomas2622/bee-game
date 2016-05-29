@@ -56,9 +56,7 @@ var controller = function () {
 		var ageHolder = self.bee()[0].age();
 		var ageHolder = ageHolder + 1;
 		self.bee()[0].age(ageHolder); 
-		for (j=0; j<10; j++){
-			createHive();
-		}
+		createHexHive();
 	};
 
 	var rdata = '%red%';
@@ -66,10 +64,9 @@ var controller = function () {
 	var bdata = '%blue%';
 	var formattedrgb; 
 
-	function createHive() {
-		var table = $('<table></table>').addClass('flowerfield');
-		for(i=0; i<10; i++){
-			var rgb = '<td style="background-color:rgb(%red%,%green%,%blue%);"></td>';
+	function createHexHive() {
+		for(i=0; i<260; i++){
+			var rgb = '<div style="background-color:rgb(%red%,%green%,%blue%);"></div>';
 			var flowerRoller = Math.floor(100*Math.random()).toString();
 
 			//this if loop determines the color of the hexagon, determining whether it has pollen or royal jelly
@@ -93,12 +90,9 @@ var controller = function () {
 			var formattedrgb = rgb.replace(rdata, r);
 			var formattedrgb = formattedrgb.replace(gdata, g);  
 			var formattedrgb = formattedrgb.replace(bdata, b);    
-		    var row = $(formattedrgb).addClass('flower').text(i);
-		    //var row = $('<td style="background-color:rgb('r','g','b');"></td>').addClass('flower').text(i);
-		    console.log(r);
-		    table.append(row);
+		    var flower = $(formattedrgb).addClass('hexagon');
+		    $('#flowerfield').append(flower);
 		}
-		$('#flowerfield').append(table);
 	}
 };
 
