@@ -31,6 +31,7 @@ Anyone is welcome to re-use the code used in this project.
 
 * [Udacity Front End Web Dev Nanodegree](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd001)
 * [JQueury Documentation](https://api.jquery.com/)
+* [Hexagon Tiles by Graham Pyne](http://codepen.io/gpyne/pen/iElhp)
 
 #### Contact Me
 
