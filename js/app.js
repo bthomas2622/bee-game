@@ -67,8 +67,6 @@ var controller = function () {
 	var rdata = '%red%';
 	var gdata = '%green%';
 	var bdata = '%blue%';
-	var xdata = '%xdata%';
-	var ydata = '%ydata%';
 	var flowerRGBarray = [];
 
 	//function to create the flowerfield that player bee with traverse
@@ -82,7 +80,7 @@ var controller = function () {
 			//flowerRow is an array that holds the rgb values of each flower in a single row, has to be initialized in each row loop
 			flowerRow = [];
 			for(j=0; j<20; j++){
-				rgb = '<div style="background-color:rgb(%red%,%green%,%blue%);"><div class="flowerdata">%xdata% %ydata%</div></div>';
+				rgb = '<div style="background-color:rgb(%red%,%green%,%blue%);"></div>';
 				if (hiveX == i & hiveY == j){
 					r = 255;
 					g = 255;
@@ -114,9 +112,7 @@ var controller = function () {
 				flowerRow.push(RGBobject); 
 				formattedrgb = rgb.replace(rdata, r);
 				formattedrgb = formattedrgb.replace(gdata, g);  
-				formattedrgb = formattedrgb.replace(bdata, b); 
-				formattedrgb = formattedrgb.replace(xdata, i);
-				formattedrgb = formattedrgb.replace(ydata, j);   
+				formattedrgb = formattedrgb.replace(bdata, b);    
 			    flower = $(formattedrgb).addClass('hexagon').data("coord", {x:i, y:j});
 			    flower.bind("click", function(){self.updatePos($(this).data("coord").x, $(this).data("coord").y)});
 			    //pushing flower to the html
