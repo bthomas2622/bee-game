@@ -51,6 +51,10 @@ var controller = function () {
 	self.bee = ko.observableArray([]);
 	self.bee.push(new beeModel(chosenBee));
 
+	//i want the hive to be in the same location every game so I am going to determine the hive location outside of flowerfield simulation
+	var hiveX = Math.floor(20*Math.random());
+	var hiveY = Math.floor(13*Math.random());
+
 	//the listClick function is how I get from the flower field to the statistics
 	self.listClick = function(clickedFlower) {
 		var ageHolder = self.bee()[0].age();
@@ -65,7 +69,7 @@ var controller = function () {
 	var bdata = '%blue%';
 	var xdata = '%xdata%';
 	var ydata = '%ydata%';
-	flowerRGBarray = [];
+	var flowerRGBarray = [];
 
 	//function to create the flowerfield that player bee with traverse
 	function createHexHive() {
@@ -74,49 +78,66 @@ var controller = function () {
 		//code to remove previous field if exists to regenerate
 		$("div").remove(".hexagon");
 		//for loop where a single flower (hexagon) is created each loop
-		for(i=0; i<20; i++){
+		for(i=0; i<13; i++){
 			//flowerRow is an array that holds the rgb values of each flower in a single row, has to be initialized in each row loop
 			flowerRow = [];
-			for(j=0; j<13; j++){
-				rgb = '<div style="background-color:rgb(%red%,%green%,%blue%);"><div class="flowerdata"></div></div>';
-				flowerRoller = Math.floor(100*Math.random()).toString();
-
-				//random number flowerRoller is the logic determines the color of the hexagon, determining whether it has pollen, royal jelly, or grass
-				if (flowerRoller >= 0 & flowerRoller < 20) {
-					//pollen, should be yellow hue
-					r = Math.floor(25*Math.random() + 175).toString();
-					g = Math.floor(20*Math.random() + 180).toString();
-					b = Math.floor(25*Math.random() + 100).toString();
-				}
-				else if (flowerRoller >= 20 & flowerRoller < 25) {
-					//royal jelly, shades of purple
-					r = Math.floor(55*Math.random() + 200).toString();
-					g = Math.floor(50*Math.random()).toString();
-					b = Math.floor(55*Math.random() + 200).toString();
+			for(j=0; j<20; j++){
+				rgb = '<div style="background-color:rgb(%red%,%green%,%blue%);"><div class="flowerdata">%xdata% %ydata%</div></div>';
+				if (hiveX == i & hiveY == j){
+					r = 255;
+					g = 255;
+					b = 255;
 				}
 				else {
-					//green grass
-					r = 61;
-					g = 143;
-					b = 61;
+					flowerRoller = Math.floor(100*Math.random()).toString();
+					//random number flowerRoller is the logic determines the color of the hexagon, determining whether it has pollen, royal jelly, or grass
+					if (flowerRoller >= 0 & flowerRoller < 20) {
+						//pollen, should be yellow hue
+						r = Math.floor(25*Math.random() + 175).toString();
+						g = Math.floor(20*Math.random() + 180).toString();
+						b = Math.floor(25*Math.random() + 100).toString();
+					}
+					else if (flowerRoller >= 20 & flowerRoller < 25) {
+						//royal jelly, shades of purple
+						r = Math.floor(55*Math.random() + 200).toString();
+						g = Math.floor(50*Math.random()).toString();
+						b = Math.floor(55*Math.random() + 200).toString();
+					}
+					else {
+						//green grass
+						r = 61;
+						g = 143;
+						b = 61;
+					}
 				}
-				var RGBobject = {red:r, green:g, blue:b};
+				RGBobject = {red:r, green:g, blue:b};
 				flowerRow.push(RGBobject); 
-				var formattedrgb = rgb.replace(rdata, r);
-				var formattedrgb = formattedrgb.replace(gdata, g);  
-				var formattedrgb = formattedrgb.replace(bdata, b);    
-			    var flower = $(formattedrgb).addClass('hexagon');
+				formattedrgb = rgb.replace(rdata, r);
+				formattedrgb = formattedrgb.replace(gdata, g);  
+				formattedrgb = formattedrgb.replace(bdata, b); 
+				formattedrgb = formattedrgb.replace(xdata, i);
+				formattedrgb = formattedrgb.replace(ydata, j);   
+			    flower = $(formattedrgb).addClass('hexagon').data("coord", {x:i, y:j});
+			    flower.bind("click", function(){self.updatePos($(this).data("coord").x, $(this).data("coord").y)});
 			    //pushing flower to the html
 			    $('#flowerfield').append(flower);
 			}
 			flowerRGBarray.push(flowerRow);
 		}
-		console.log(flowergoodies[0][0])
-		console.log(flowergoodies[1][0])
+		console.log(flowerRGBarray[0][0])
+		console.log(flowerRGBarray[1][0])
+	}
+
+	self.updatePos = function(x, y){
+		console.log(x);
+		console.log(y);
 	}
 };
 
 //apply the knockout observable properties to the controller, essential for dynamic DOM, etc.
 ko.applyBindings(new controller);
+
+
+	
 
 
