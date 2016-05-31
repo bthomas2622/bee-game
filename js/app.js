@@ -55,6 +55,8 @@ var controller = function () {
 	var hiveX = Math.floor(20*Math.random());
 	var hiveY = Math.floor(13*Math.random());
 
+	self.Pos = {x:hiveX,y:hiveY};
+
 	//the listClick function is how I get from the flower field to the statistics
 	self.listClick = function(clickedFlower) {
 		var ageHolder = self.bee()[0].age();
@@ -125,8 +127,24 @@ var controller = function () {
 	}
 
 	self.updatePos = function(x, y){
-		console.log(x);
-		console.log(y);
+		//converting offset coordinates to cube coordinates in order to do distance calculation
+		//http://www.redblobgames.com/grids/hexagons/
+		var oldcubex, oldcubey, oldcubez, newcubex, newcubey, newcubez;
+		oldcubex = self.Pos.y;
+		oldcubez = self.Pos.x - (self.Pos.y - (self.Pos.y&1)) / 2
+		oldcubey = -oldcubex - oldcubez;
+		console.log(y&1);
+
+		newcubex = y;
+		newcubez = x - (y - (y&1)) / 2
+		newcubey = -newcubex - newcubez;
+
+		var cubeDistance = Math.max(Math.abs(newcubex - oldcubex), Math.abs(newcubey - oldcubey), Math.abs(newcubez - oldcubez));
+		var leftoverEnergy = self.bee()[0].maxEnergy() - cubeDistance;
+		self.bee()[0].maxEnergy(leftoverEnergy)
+		self.Pos.x = x;
+		self.Pos.y = y;
+		console.log(self.Pos);
 	}
 };
 
