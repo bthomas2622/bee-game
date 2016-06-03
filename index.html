@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/stylesheet.css">
         <link rel="stylesheet" href="http://weloveiconfonts.com/api/?family=zocial" />
+        <link href='https://fonts.googleapis.com/css?family=Playfair+Display' rel='stylesheet' type='text/css'>
     </head>
     <body>
         <div class="row">
@@ -22,16 +23,24 @@
                 <div class="col-md-12">
             </div>
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
+            <div class="row statRow">
+                <div class="col-md-4 col-sm-4">
                     <ul data-bind="foreach: bee">
                         <li>Species: <span data-bind="text: species, click: $parent.listClick"></span></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <ul data-bind="foreach: bee">
                         <li>Energy: <span data-bind="text: maxEnergy"></span></li>
                         <li>Pollen Count: <span data-bind="text: pollenCount"></span></li>
                         <li>Age: <span data-bind="text: age"></span></li>
                         <li>Armor: <span data-bind="text: armor"></span></li>
                         <li>Speed: <span data-bind="text: speed"></span></li>
                         <li>Sting Strength: <span data-bind="text: stingStrength"></span></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <ul data-bind="foreach: bee">
                         <li>Honey Produced: <span data-bind="text: honeyCount"></span></li>
                         <li>Beeswax Produced: <span data-bind="text: beeswaxCount"></span></li>
                         <li>Royal Jelly Produced: <span data-bind="text: royalJellyCount"></span></li>

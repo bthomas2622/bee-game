@@ -52,9 +52,8 @@ var controller = function () {
 	self.bee.push(new beeModel(chosenBee));
 
 	//i want the hive to be in the same location every game so I am going to determine the hive location outside of flowerfield simulation
-	var hiveX = Math.floor(20*Math.random());
-	var hiveY = Math.floor(13*Math.random());
-
+	var hiveX = Math.floor(13*Math.random());
+	var hiveY = Math.floor(20*Math.random());
 	self.Pos = {x:hiveX,y:hiveY};
 
 	//the listClick function is how I get from the flower field to the statistics
@@ -62,7 +61,7 @@ var controller = function () {
 		var ageHolder = self.bee()[0].age();
 		var ageHolder = ageHolder + 1;
 		self.bee()[0].age(ageHolder); 
-		createHexHive();
+		self.createHexHive();
 	};
 
 	//variables holding temporary strings to be replaced in rgb formatting
@@ -72,7 +71,7 @@ var controller = function () {
 	var flowerRGBarray = [];
 
 	//function to create the flowerfield that player bee with traverse
-	function createHexHive() {
+	self.createHexHive = function() {
 		var i, j, r, g, b, rgb, flowerRoller, RGBobject, flower, formattedrgb, flowerRow = [];
 		flowerRGBarray = [];
 		//code to remove previous field if exists to regenerate
@@ -84,6 +83,7 @@ var controller = function () {
 			for(j=0; j<20; j++){
 				rgb = '<div style="background-color:rgb(%red%,%green%,%blue%);"></div>';
 				if (hiveX == i & hiveY == j){
+					rgb = '<div style="background-color:rgb(%red%,%green%,%blue%);"></div>';
 					r = 255;
 					g = 255;
 					b = 255;
@@ -117,13 +117,14 @@ var controller = function () {
 				formattedrgb = formattedrgb.replace(bdata, b);    
 			    flower = $(formattedrgb).addClass('hexagon').data("coord", {x:i, y:j});
 			    flower.bind("click", function(){self.updatePos($(this).data("coord").x, $(this).data("coord").y)});
+			    if (hiveX == i & hiveY == j){
+			    	flower.bind("click", function(){self.createHexHive()});
+			    }
 			    //pushing flower to the html
 			    $('#flowerfield').append(flower);
 			}
 			flowerRGBarray.push(flowerRow);
 		}
-		console.log(flowerRGBarray[0][0])
-		console.log(flowerRGBarray[1][0])
 	}
 
 	self.updatePos = function(x, y){
@@ -133,7 +134,6 @@ var controller = function () {
 		oldcubex = self.Pos.y;
 		oldcubez = self.Pos.x - (self.Pos.y - (self.Pos.y&1)) / 2
 		oldcubey = -oldcubex - oldcubez;
-		console.log(y&1);
 
 		newcubex = y;
 		newcubez = x - (y - (y&1)) / 2
@@ -144,14 +144,11 @@ var controller = function () {
 		self.bee()[0].maxEnergy(leftoverEnergy)
 		self.Pos.x = x;
 		self.Pos.y = y;
-		console.log(self.Pos);
 	}
 };
 
 //apply the knockout observable properties to the controller, essential for dynamic DOM, etc.
 ko.applyBindings(new controller);
-
-
 	
 
 
