@@ -58,9 +58,6 @@ var controller = function () {
 
 	//the listClick function is how I get from the flower field to the statistics
 	self.listClick = function(clickedFlower) {
-		var ageHolder = self.bee()[0].age();
-		var ageHolder = ageHolder + 1;
-		self.bee()[0].age(ageHolder); 
 		self.createHexHive();
 	};
 
@@ -91,23 +88,23 @@ var controller = function () {
 				else {
 					flowerRoller = Math.floor(100*Math.random()).toString();
 					//random number flowerRoller is the logic determines the color of the hexagon, determining whether it has pollen, royal jelly, or grass
-					if (flowerRoller >= 0 & flowerRoller < 20) {
+					if (flowerRoller >= 0 & flowerRoller < 22) {
 						//pollen, should be yellow hue
-						r = Math.floor(25*Math.random() + 175).toString();
+						r = Math.floor(45*Math.random() + 175).toString();
 						g = Math.floor(20*Math.random() + 180).toString();
-						b = Math.floor(25*Math.random() + 100).toString();
+						b = Math.floor(45*Math.random() + 100).toString();
 					}
-					else if (flowerRoller >= 20 & flowerRoller < 25) {
+					else if (flowerRoller >= 23 & flowerRoller < 25) {
 						//royal jelly, shades of purple
-						r = Math.floor(55*Math.random() + 200).toString();
+						r = Math.floor(80*Math.random() + 150).toString();
 						g = Math.floor(50*Math.random()).toString();
-						b = Math.floor(55*Math.random() + 200).toString();
+						b = Math.floor(80*Math.random() + 150).toString();
 					}
 					else {
 						//green grass
-						r = 61;
-						g = 143;
-						b = 61;
+						r = Math.floor(30*Math.random() + 50).toString();
+						g = Math.floor(30*Math.random() + 120).toString();
+						b = Math.floor(30*Math.random() + 50).toString();
 					}
 				}
 				RGBobject = {red:r, green:g, blue:b};
@@ -125,6 +122,9 @@ var controller = function () {
 			}
 			flowerRGBarray.push(flowerRow);
 		}
+		var ageHolder = self.bee()[0].age();
+		var ageHolder = ageHolder + 1;
+		self.bee()[0].age(ageHolder); 
 	}
 
 	self.updatePos = function(x, y){
