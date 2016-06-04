@@ -144,6 +144,12 @@ var controller = function () {
 		self.bee()[0].maxEnergy(leftoverEnergy)
 		self.Pos.x = x;
 		self.Pos.y = y;
+		if (leftoverEnergy <= 0) {
+			document.location.href = "endScreen.html";
+		}
+		if (x == hiveX & y == hiveY) {
+			self.bee()[0].maxEnergy(chosenBee.maxEnergy);
+		}
 	}
 };
 
