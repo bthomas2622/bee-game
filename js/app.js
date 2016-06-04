@@ -55,6 +55,7 @@ var controller = function () {
 	var hiveX = Math.floor(13*Math.random());
 	var hiveY = Math.floor(20*Math.random());
 	self.Pos = {x:hiveX,y:hiveY};
+	self.Backpack = {pollenCollected:0,jellyCollected:0};
 
 	//the listClick function is how I get from the flower field to the statistics
 	self.listClick = function(clickedFlower) {
@@ -69,7 +70,7 @@ var controller = function () {
 
 	//function to create the flowerfield that player bee with traverse
 	self.createHexHive = function() {
-		var i, j, r, g, b, rgb, flowerRoller, RGBobject, flower, formattedrgb, flowerRow = [];
+		var i, j, r, g, b, rgb, flowerRoller, RGBobject, flower, formattedrgb, flowerRow = [], pollenLevel, jellyLevel;
 		flowerRGBarray = [];
 		//code to remove previous field if exists to regenerate
 		$("div").remove(".hexagon");
@@ -93,18 +94,24 @@ var controller = function () {
 						r = Math.floor(45*Math.random() + 175).toString();
 						g = Math.floor(20*Math.random() + 180).toString();
 						b = Math.floor(45*Math.random() + 100).toString();
+						pollenLevel = 1;
+						jellyLevel = 0;
 					}
 					else if (flowerRoller >= 23 & flowerRoller < 25) {
 						//royal jelly, shades of purple
 						r = Math.floor(80*Math.random() + 150).toString();
 						g = Math.floor(50*Math.random()).toString();
 						b = Math.floor(80*Math.random() + 150).toString();
+						pollenLevel = 0;
+						jellyLevel = 1;
 					}
 					else {
 						//green grass
 						r = Math.floor(30*Math.random() + 50).toString();
 						g = Math.floor(30*Math.random() + 120).toString();
 						b = Math.floor(30*Math.random() + 50).toString();
+						pollenLevel = 0;
+						jellyLevel = 0;
 					}
 				}
 				RGBobject = {red:r, green:g, blue:b};
@@ -112,8 +119,8 @@ var controller = function () {
 				formattedrgb = rgb.replace(rdata, r);
 				formattedrgb = formattedrgb.replace(gdata, g);  
 				formattedrgb = formattedrgb.replace(bdata, b);    
-			    flower = $(formattedrgb).addClass('hexagon').data("coord", {x:i, y:j});
-			    flower.bind("click", function(){self.updatePos($(this).data("coord").x, $(this).data("coord").y)});
+			    flower = $(formattedrgb).addClass('hexagon').data("flowerData", {x:i, y:j, p: pollenLevel, j: jellyLevel});
+			    flower.bind("click", function(){self.updatePos($(this).data("flowerData").x, $(this).data("flowerData").y, $(this).data("flowerData").p, $(this).data("flowerData").j)});
 			    if (hiveX == i & hiveY == j){
 			    	flower.bind("click", function(){self.createHexHive()});
 			    }
@@ -125,12 +132,14 @@ var controller = function () {
 		var ageHolder = self.bee()[0].age();
 		var ageHolder = ageHolder + 1;
 		self.bee()[0].age(ageHolder); 
+		self.Backpack.pollenCollected = 0;
+		self.Backpack.jellyCollected = 0;
 	}
 
-	self.updatePos = function(x, y){
+	self.updatePos = function(x, y, pollen, jelly){
 		//converting offset coordinates to cube coordinates in order to do distance calculation
 		//http://www.redblobgames.com/grids/hexagons/
-		var oldcubex, oldcubey, oldcubez, newcubex, newcubey, newcubez;
+		var oldcubex, oldcubey, oldcubez, newcubex, newcubey, newcubez, oldPollen, oldJelly, oldHoney, oldRoyalJelly;
 		oldcubex = self.Pos.y;
 		oldcubez = self.Pos.x - (self.Pos.y - (self.Pos.y&1)) / 2
 		oldcubey = -oldcubex - oldcubez;
@@ -144,11 +153,22 @@ var controller = function () {
 		self.bee()[0].maxEnergy(leftoverEnergy)
 		self.Pos.x = x;
 		self.Pos.y = y;
+
+		oldJelly = self.Backpack.jellyCollected;
+		self.Backpack.jellyCollected = oldJelly + jelly;
+		oldPollen = self.Backpack.pollenCollected;
+		self.Backpack.pollenCollected = oldPollen + pollen; 
+		console.log(pollen);
+
 		if (leftoverEnergy <= 0) {
 			document.location.href = "endScreen.html";
 		}
 		if (x == hiveX & y == hiveY) {
 			self.bee()[0].maxEnergy(chosenBee.maxEnergy);
+			oldHoney = self.bee()[0].honeyCount();
+			self.bee()[0].honeyCount(oldHoney + self.Backpack.pollenCollected);
+			oldRoyalJelly = self.bee()[0].royalJellyCount();
+			self.bee()[0].royalJellyCount(oldRoyalJelly + self.Backpack.jellyCollected);
 		}
 	}
 };
