@@ -1,7 +1,7 @@
 /*the beeTypes object contains the information for all of possible bee species that the 
 model can make observable and the controller and associated functions can manipulate */
 var beeTypes = [
-  {
+	{
 	species : 'Honey Bee',
 	maxEnergy : 20,
 	pollenCount : 0,
@@ -12,8 +12,8 @@ var beeTypes = [
 	speed :  5,
 	stingStrength : 2,
 	armor : 3
-  },
-  {
+	},
+	{
 	species : 'Carpenter Bee',
 	maxEnergy : 25,
 	pollenCount : 0,
@@ -24,7 +24,36 @@ var beeTypes = [
 	speed :  4,
 	stingStrength : 4,
 	armor : 4
-  },
+	},
+];
+
+//object that holds all possible bad guys and what could happen to you
+var colonyThreats = [
+	{
+	name: 'Pesticide'	
+	},
+	{
+	name: 'Varroa mites'
+	viruses: ['Deformed wing virus', 'Acute bee paralysis virus']	
+	},	
+	name: 'Small hive beetles'
+	viruses: ['Deformed wing virus', 'Acute bee paralysis virus']	
+	},
+	{
+	name: 'Fungicide'	
+	},
+	{
+	name: 'Climate change'	
+	},
+	{
+	name: 'Human'	
+	},
+	{
+	name: 'Loss of habitat'	
+	},
+	{
+	name: 'Lack of genetic diversity'	
+	}
 ];
 
 var caliFlowers = ["Calamintha nepetoides", "Linaria purpurea", "Ceanothus - Ray Hartman", "Erigeron karvinskianus", "Grindelia stricta", "Erigeron glaucus - Wayne Roderick", "Lavandula stoechas", "Nepeta faasennii", "Vitex agnus-castus", "Salvia mellifera", "Solidago californica", "Layia platyglossa", "Eriogonum grande rubescens", "Eschscholzia californica", "Salvia - Indigo Spires", "Cosmos sulphureus", "Caryoteris incana - Bluebeard", "Penstemon heterophyllus", "Lavandula intermedia - Provence", "Salvia microphylla - Hot Lips", "Gilia capitata", "Rudbeckia hirta", "Bidens ferulifolia", "Echium candicans", "Helianthus annuus - Sunflower", "Cosmos bipinnatus", "Salvia uliginosa", "Gaillardia grandiflora - Oranges and Lemons", "Phacelia tanancetifolia"];
@@ -152,7 +181,7 @@ var controller = function () {
 	self.updatePos = function(x, y, pollen, jelly){
 		//converting offset coordinates to cube coordinates in order to do distance calculation
 		//http://www.redblobgames.com/grids/hexagons/
-		var oldcubex, oldcubey, oldcubez, newcubex, newcubey, newcubez, oldPollen, oldJelly, oldHoney, oldRoyalJelly, oldQueens;
+		var oldcubex, oldcubey, oldcubez, newcubex, newcubey, newcubez, oldPollen, oldJelly, oldHoney, oldRoyalJelly, oldQueens, cubeDistance, leftoverEnergy, eventProb, dice;
 		oldcubex = self.Pos.y;
 		oldcubez = self.Pos.x - (self.Pos.y - (self.Pos.y&1)) / 2
 		oldcubey = -oldcubex - oldcubez;
@@ -161,8 +190,8 @@ var controller = function () {
 		newcubez = x - (y - (y&1)) / 2
 		newcubey = -newcubex - newcubez;
 
-		var cubeDistance = Math.max(Math.abs(newcubex - oldcubex), Math.abs(newcubey - oldcubey), Math.abs(newcubez - oldcubez));
-		var leftoverEnergy = self.bee()[0].maxEnergy() - cubeDistance;
+		cubeDistance = Math.max(Math.abs(newcubex - oldcubex), Math.abs(newcubey - oldcubey), Math.abs(newcubez - oldcubez));
+		leftoverEnergy = self.bee()[0].maxEnergy() - cubeDistance;
 		self.bee()[0].maxEnergy(leftoverEnergy)
 		self.Pos.x = x;
 		self.Pos.y = y;
@@ -171,7 +200,6 @@ var controller = function () {
 		self.Backpack.jellyCollected = oldJelly + jelly;
 		oldPollen = self.Backpack.pollenCollected;
 		self.Backpack.pollenCollected = oldPollen + pollen; 
-		console.log(pollen);
 
 		if (leftoverEnergy <= 0) {
 			document.location.href = "endScreen.html";
@@ -187,6 +215,20 @@ var controller = function () {
 				self.bee()[0].royalJellyCount(oldRoyalJelly - 20);
 				oldQueens = self.bee()[0].queenCount();
 				self.bee()[0].queenCount(oldQueens + 1);
+			}
+		}
+		else {
+			//RANDOM EVENT CODE
+			if (cubeDistance > 5) {
+				eventProb = 0.15; 
+			}
+			else {
+				eventProb = (cubeDistance + 10) / 100;
+				console.log(eventProb);
+			}
+			dice = Math.random();
+			if (eventProb > dice){
+
 			}
 		}
 	}
