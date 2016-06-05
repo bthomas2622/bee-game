@@ -39,13 +39,25 @@
                 <div class="col-md-4 col-sm-4">
                     <ul data-bind="foreach: bee">
                         <li>Honey Produced: <span data-bind="text: honeyCount"></span></li>
-                        <li>Beeswax Produced: <span data-bind="text: beeswaxCount"></span></li>
                         <li>Royal Jelly Produced: <span data-bind="text: royalJellyCount"></span></li>
+                        <li>Queens Produced: <span data-bind="text: queenCount"></span></li>
                     </ul>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12" id="flowerfield">
+                </div>
+            </div>
+             <div class="row gameData">
+                <div class="col-md-4 col-sm-4">
+                    <h3>Last Flower Visited</h3>
+                    <span id="lastflower"></span>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <h3>Game Dialogue</h3>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <h3>Weather Conditions</h3>
                 </div>
             </div>
         </div>

@@ -5,8 +5,8 @@ var beeTypes = [
 	species : 'Honey Bee',
 	maxEnergy : 20,
 	pollenCount : 0,
-	honeyCount: 0,
-	beeswaxCount: 0,
+	honeyCount: 10,
+	queenCount: 0,
 	royalJellyCount: 0,
 	age : 0,
 	speed :  5,
@@ -17,8 +17,8 @@ var beeTypes = [
 	species : 'Carpenter Bee',
 	maxEnergy : 25,
 	pollenCount : 0,
-	honeyCount: 0,
-	beeswaxCount: 0,
+	honeyCount: 10,
+	queenCount: 0,
 	royalJellyCount: 0,
 	age : 0,
 	speed :  4,
@@ -26,6 +26,8 @@ var beeTypes = [
 	armor : 4
   },
 ];
+
+var caliFlowers = ["Calamintha nepetoides", "Linaria purpurea", "Ceanothus - Ray Hartman", "Erigeron karvinskianus", "Grindelia stricta", "Erigeron glaucus - Wayne Roderick", "Lavandula stoechas", "Nepeta faasennii", "Vitex agnus-castus", "Salvia mellifera", "Solidago californica", "Layia platyglossa", "Eriogonum grande rubescens", "Eschscholzia californica", "Salvia - Indigo Spires", "Cosmos sulphureus", "Caryoteris incana - Bluebeard", "Penstemon heterophyllus", "Lavandula intermedia - Provence", "Salvia microphylla - Hot Lips", "Gilia capitata", "Rudbeckia hirta", "Bidens ferulifolia", "Echium candicans", "Helianthus annuus - Sunflower", "Cosmos bipinnatus", "Salvia uliginosa", "Gaillardia grandiflora - Oranges and Lemons", "Phacelia tanancetifolia"];
 
 //bee chosen for adventure, right now just manually chosen in code
 var chosenBee = beeTypes[1];
@@ -36,7 +38,7 @@ var beeModel = function(data){
 	this.maxEnergy = ko.observable(data.maxEnergy);
 	this.pollenCount = ko.observable(data.pollenCount);
 	this.honeyCount = ko.observable(data.honeyCount);
-	this.beeswaxCount = ko.observable(data.beeswaxCount);
+	this.queenCount = ko.observable(data.queenCount);
 	this.royalJellyCount = ko.observable(data.royalJellyCount);
 	this.age = ko.observable(data.age);
 	this.speed = ko.observable(data.speed);
@@ -70,7 +72,7 @@ var controller = function () {
 
 	//function to create the flowerfield that player bee with traverse
 	self.createHexHive = function() {
-		var i, j, r, g, b, rgb, flowerRoller, RGBobject, flower, formattedrgb, flowerRow = [], pollenLevel, jellyLevel;
+		var i, j, r, g, b, rgb, flowerRoller, RGBobject, flower, formattedrgb, flowerRow = [], pollenLevel, jellyLevel, flowerType;
 		flowerRGBarray = [];
 		//code to remove previous field if exists to regenerate
 		$("div").remove(".hexagon");
@@ -96,6 +98,7 @@ var controller = function () {
 						b = Math.floor(45*Math.random() + 100).toString();
 						pollenLevel = 1;
 						jellyLevel = 0;
+						flowerType = caliFlowers[Math.floor(Math.random()*caliFlowers.length)];
 					}
 					else if (flowerRoller >= 23 & flowerRoller < 25) {
 						//royal jelly, shades of purple
@@ -104,6 +107,7 @@ var controller = function () {
 						b = Math.floor(80*Math.random() + 150).toString();
 						pollenLevel = 0;
 						jellyLevel = 1;
+						flowerType = caliFlowers[Math.floor(Math.random()*caliFlowers.length)];
 					}
 					else {
 						//green grass
@@ -112,6 +116,7 @@ var controller = function () {
 						b = Math.floor(30*Math.random() + 50).toString();
 						pollenLevel = 0;
 						jellyLevel = 0;
+						flowerType = "";
 					}
 				}
 				RGBobject = {red:r, green:g, blue:b};
@@ -119,8 +124,9 @@ var controller = function () {
 				formattedrgb = rgb.replace(rdata, r);
 				formattedrgb = formattedrgb.replace(gdata, g);  
 				formattedrgb = formattedrgb.replace(bdata, b);    
-			    flower = $(formattedrgb).addClass('hexagon').data("flowerData", {x:i, y:j, p: pollenLevel, j: jellyLevel});
+			    flower = $(formattedrgb).addClass('hexagon').data("flowerData", {x:i, y:j, p: pollenLevel, j: jellyLevel, f: flowerType});
 			    flower.bind("click", function(){self.updatePos($(this).data("flowerData").x, $(this).data("flowerData").y, $(this).data("flowerData").p, $(this).data("flowerData").j)});
+			    flower.bind("click", function(){$('#lastflower').replaceWith('<span id="lastflower">'.concat($(this).data("flowerData").f + '</span>'))});
 			    if (hiveX == i & hiveY == j){
 			    	flower.bind("click", function(){self.createHexHive()});
 			    }
@@ -139,7 +145,7 @@ var controller = function () {
 	self.updatePos = function(x, y, pollen, jelly){
 		//converting offset coordinates to cube coordinates in order to do distance calculation
 		//http://www.redblobgames.com/grids/hexagons/
-		var oldcubex, oldcubey, oldcubez, newcubex, newcubey, newcubez, oldPollen, oldJelly, oldHoney, oldRoyalJelly;
+		var oldcubex, oldcubey, oldcubez, newcubex, newcubey, newcubez, oldPollen, oldJelly, oldHoney, oldRoyalJelly, oldQueens;
 		oldcubex = self.Pos.y;
 		oldcubez = self.Pos.x - (self.Pos.y - (self.Pos.y&1)) / 2
 		oldcubey = -oldcubex - oldcubez;
@@ -169,6 +175,12 @@ var controller = function () {
 			self.bee()[0].honeyCount(oldHoney + self.Backpack.pollenCollected);
 			oldRoyalJelly = self.bee()[0].royalJellyCount();
 			self.bee()[0].royalJellyCount(oldRoyalJelly + self.Backpack.jellyCollected);
+			if (self.bee()[0].royalJellyCount() >= 20) {
+				oldRoyalJelly = self.bee()[0].royalJellyCount();
+				self.bee()[0].royalJellyCount(oldRoyalJelly - 20);
+				oldQueens = self.bee()[0].queenCount();
+				self.bee()[0].queenCount(oldQueens + 1);
+			}
 		}
 	}
 };
