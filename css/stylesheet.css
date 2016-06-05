@@ -37,6 +37,10 @@ td {
 	padding-top: 10px
 }
 
+.usedFlower {
+	background-color: #544017 !important; 
+}
+
 
 /* MEDIA QUERIES */
 
@@ -95,8 +99,6 @@ td {
 .hexagon:hover {
 	opacity: .6;
 	cursor: pointer;
-}
-.hexagon:active {
 }
 
 /* Zocial CSS */

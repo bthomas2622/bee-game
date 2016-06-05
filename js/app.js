@@ -72,7 +72,7 @@ var controller = function () {
 
 	//function to create the flowerfield that player bee with traverse
 	self.createHexHive = function() {
-		var i, j, r, g, b, rgb, flowerRoller, RGBobject, flower, formattedrgb, flowerRow = [], pollenLevel, jellyLevel, flowerType;
+		var i, j, r, g, b, rgb, flowerRoller, RGBobject, flower, formattedrgb, flowerRow = [], pollenLevel, jellyLevel, flowerType, brownRGB;
 		flowerRGBarray = [];
 		//code to remove previous field if exists to regenerate
 		$("div").remove(".hexagon");
@@ -129,6 +129,13 @@ var controller = function () {
 			    flower.bind("click", function(){$('#lastflower').replaceWith('<span id="lastflower">'.concat($(this).data("flowerData").f + '</span>'))});
 			    if (hiveX == i & hiveY == j){
 			    	flower.bind("click", function(){self.createHexHive()});
+			    }
+			    else {
+			    	flower.bind("click", function(){
+			    		$(this).addClass("usedFlower");
+			    		$(this).data("flowerData").p = 0;
+			    		$(this).data("flowerData").j = 0;
+			    	});
 			    }
 			    //pushing flower to the html
 			    $('#flowerfield').append(flower);
