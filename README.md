@@ -31,8 +31,10 @@ Anyone is welcome to re-use the code used in this project.
 
 * [Udacity Front End Web Dev Nanodegree](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd001)
 * [JQueury Documentation](https://api.jquery.com/)
+* [Bootstrap Documentation](http://getbootstrap.com/)
 * [Hexagon Tiles by Graham Pyne](http://codepen.io/gpyne/pen/iElhp)
 * [Hexagon Calculations by Red Blob Games](http://www.redblobgames.com/grids/hexagons/)
+* [UC Berkeley Urban Bee Lab](http://www.helpabee.org/seasonal-bee-gardening.html)
 
 #### Contact Me
 
