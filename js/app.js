@@ -33,10 +33,11 @@ var colonyThreats = [
 	name: 'Pesticide'	
 	},
 	{
-	name: 'Varroa mites'
+	name: 'Varroa mites',
 	viruses: ['Deformed wing virus', 'Acute bee paralysis virus']	
-	},	
-	name: 'Small hive beetles'
+	},
+	{	
+	name: 'Small hive beetles',
 	viruses: ['Deformed wing virus', 'Acute bee paralysis virus']	
 	},
 	{
@@ -182,6 +183,7 @@ var controller = function () {
 		//converting offset coordinates to cube coordinates in order to do distance calculation
 		//http://www.redblobgames.com/grids/hexagons/
 		var oldcubex, oldcubey, oldcubez, newcubex, newcubey, newcubez, oldPollen, oldJelly, oldHoney, oldRoyalJelly, oldQueens, cubeDistance, leftoverEnergy, eventProb, dice;
+		var dialogueText1, dialogueText2, riskButton, runButton;
 		oldcubex = self.Pos.y;
 		oldcubez = self.Pos.x - (self.Pos.y - (self.Pos.y&1)) / 2
 		oldcubey = -oldcubex - oldcubez;
@@ -220,15 +222,26 @@ var controller = function () {
 		else {
 			//RANDOM EVENT CODE
 			if (cubeDistance > 5) {
-				eventProb = 0.15; 
+				eventProb = 0.30; 
 			}
 			else {
-				eventProb = (cubeDistance + 10) / 100;
+				eventProb = (cubeDistance + 25) / 100;
 				console.log(eventProb);
 			}
 			dice = Math.random();
+			//clear out any prompts from previous dialogues
+			$('#dialogueWindow').replaceWith("<div id='dialogueWindow'></div>");
 			if (eventProb > dice){
-
+				dialogueText1 = "<button type='button' class='btn btn-danger active'>Risk</button>";
+				dialogueText2 = "<button type='button' class='btn btn-danger active'>Run</button>";
+				riskButton = $(dialogueText1).bind("click", function(){
+					self.bee()[0].maxEnergy(400);
+		    	});
+		    	runButton = $(dialogueText1).bind("click", function(){
+					self.bee()[0].maxEnergy(200);
+		    	});
+				$('#dialogueWindow').append(riskButton);
+				$('#dialogueWindow').append(runButton);
 			}
 		}
 	}

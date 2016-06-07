@@ -41,6 +41,12 @@ td {
 	background-color: #544017 !important; 
 }
 
+.btn {
+	margin-left: 10px;
+	margin-top: 10px;
+	font-size: 14px;
+}
+
 
 /* MEDIA QUERIES */
 
