@@ -21,7 +21,7 @@ TBD
 
 #### Directory Structure
 
-The index.html fild contains the application. The css folder holds the stylesheets. The images folder holds images. The javascript (js) folder holds the bootstrap and jquery frameworks. The "dist" folder holds optimized stylesheets and images. 
+The index.html fild contains the application. The css folder holds the stylesheets. The images folder holds the images. The javascript (js) folder holds the bootstrap and jquery frameworks. The "dist" folder holds optimized stylesheets and images. 
 
 #### Contributing
 
