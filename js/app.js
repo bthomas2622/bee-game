@@ -30,30 +30,79 @@ var beeTypes = [
 //object that holds all possible bad guys and what could happen to you
 var colonyThreats = [
 	{
-	name: 'Pesticide'	
+	name: 'pesticide',
+	text: 'Neonicotinoid Pesticide present',
+	definition: 'We run this planet dust',	
+	impact: 'honey',
+	effect: '%data% of honey has been lost'
 	},
 	{
-	name: 'Varroa mites',
-	viruses: ['Deformed wing virus', 'Acute bee paralysis virus']	
+	name: 'varroaMite',
+	text: 'Varroa Mite attacks!',
+	definition: 'External parasitic nightmare',
+	viruses: [{
+			name: 'Deformed wing virus', 
+			effect: 'Deformed wing virus has damaged your appendages and reduced energy capacity', 
+			impact: 'maxEnergy'
+		},
+		{
+			name: 'Black queen cell virus', 
+			effect: 'Black queen cell virus has killed queen larva', 
+			impact: 'queenCount'
+		},
+		{
+			name: 'Israeli acute paralysis virus',
+			effect: 'Israeli acute paralysis virus has depleted your energy',
+			impact: 'energy'	
+		}] 		
 	},
 	{	
-	name: 'Small hive beetles',
-	viruses: ['Deformed wing virus', 'Acute bee paralysis virus']	
+	name: 'smallHiveBeetle',
+	text: 'Small Hive Beetle attacks!',
+	definition: 'Vile beetle that infests hive, damaging honeycomb, laying larvae that defecate in honey... discoloring with feces. The bee equivalent of a frat party.',
+	effect: 'Small Hive Beetle has ransacked the hive and %data% of honey has been lost',
+	impact: 'honey'
 	},
 	{
-	name: 'Fungicide'	
+	name: 'parasiticPhoridFly',
+	text: 'Parasitic Phorid Fly attacks!',
+	definition: '"Zombie Flies" that lay eggs in your abdomen that slowly grow as you go mad. The larvae emerges from your lifeless carcass through your neck',
+	effect: 'The Parasitic Phorid Fly has successfully implanted egg in your abdomen, max energy will decrease 1 per day. Very Tragic.',
+	impact: 'maxEnergy'	
 	},
 	{
-	name: 'Climate change'	
+	name: 'climateChange',
+	text: '1437 pickup trucks pass by, the subsequent warming kills off some plant life.',
+	definition: 'Climate Change, you know that thing that makes people disagree with scientists',
+	impact: 'climate'	
 	},
 	{
-	name: 'Human'	
+	name: 'rain',
+	text: 'Storms a brewin',
+	definition: 'Moisture condensed from the atmosphere that falls visibly in separate drops',
+	effect: 'An afternoon shower washes away fresh paint, hopscotch, and pollen',
+	impact: 'pollen'	
 	},
 	{
-	name: 'Loss of habitat'	
+	name: 'human',
+	text: 'Frenzied child with tennis racket attacks!',
+	definition: 'It must be summer',
+	effect: 'Your jacked bee body is no match for human recreational activities. Your journey ends here.',
+	impact: 'death'	
 	},
 	{
-	name: 'Lack of genetic diversity'	
+	name: 'lostGeneticDiversity',
+	text: 'You encounter an industrial bee complex. Mating is not recommended due to lack of genetic variation',
+	definition: 'Insect Insest',
+	effect: 'Queen larva produced eats all your royal jelly and dies.',
+	impact: 'royalJelly'	
+	},
+	{
+	name: 'malnutrition',	
+	text: 'You encounter a field of almonds, be careful not to gorge yourself.',
+	definition: 'A wide variety of pollen leads to stronger bees. Variety is the spice of life.',
+	effect: 'A monoculture diet has resulted in 50% less pollen collected',
+	impact: 'pollen'
 	}
 ];
 
@@ -237,7 +286,7 @@ var controller = function () {
 				riskButton = $(dialogueText1).bind("click", function(){
 					self.bee()[0].maxEnergy(400);
 		    	});
-		    	runButton = $(dialogueText1).bind("click", function(){
+		    	runButton = $(dialogueText2).bind("click", function(){
 					self.bee()[0].maxEnergy(200);
 		    	});
 				$('#dialogueWindow').append(riskButton);
