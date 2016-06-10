@@ -161,7 +161,7 @@ var controller = function () {
 			flowerRow = [];
 			for(j=0; j<20; j++){
 				rgb = '<div style="background-color:rgb(%red%,%green%,%blue%);"></div>';
-				if (hiveX == i & hiveY == j){
+				if (hiveX == i && hiveY == j){
 					rgb = '<div style="background-color:rgb(%red%,%green%,%blue%);"></div>';
 					r = 255;
 					g = 255;
@@ -170,7 +170,7 @@ var controller = function () {
 				else {
 					flowerRoller = Math.floor(100*Math.random()).toString();
 					//random number flowerRoller is the logic determines the color of the hexagon, determining whether it has pollen, royal jelly, or grass
-					if (flowerRoller >= 0 & flowerRoller < 22) {
+					if (flowerRoller >= 0 && flowerRoller < 22) {
 						//pollen, should be yellow hue
 						r = Math.floor(45*Math.random() + 175).toString();
 						g = Math.floor(20*Math.random() + 180).toString();
@@ -179,7 +179,7 @@ var controller = function () {
 						jellyLevel = 0;
 						flowerType = caliFlowers[Math.floor(Math.random()*caliFlowers.length)];
 					}
-					else if (flowerRoller >= 23 & flowerRoller < 25) {
+					else if (flowerRoller >= 23 && flowerRoller < 25) {
 						//royal jelly, shades of purple
 						r = Math.floor(80*Math.random() + 150).toString();
 						g = Math.floor(50*Math.random()).toString();
@@ -204,10 +204,10 @@ var controller = function () {
 				formattedrgb = formattedrgb.replace(gdata, g);  
 				formattedrgb = formattedrgb.replace(bdata, b);    
 			    flower = $(formattedrgb).addClass('hexagon').data("flowerData", {x:i, y:j, p: pollenLevel, j: jellyLevel, f: flowerType});
-			    flower.bind("click", function(){self.updatePos($(this).data("flowerData").x, $(this).data("flowerData").y, $(this).data("flowerData").p, $(this).data("flowerData").j)});
-			    flower.bind("click", function(){$('#lastflower').replaceWith('<span id="lastflower">'.concat($(this).data("flowerData").f + '</span>'))});
-			    if (hiveX == i & hiveY == j){
-			    	flower.bind("click", function(){self.createHexHive()});
+			    flower.bind("click", function(){self.updatePos($(this).data("flowerData").x, $(this).data("flowerData").y, $(this).data("flowerData").p, $(this).data("flowerData").j);});
+			    flower.bind("click", function(){$('#lastflower').replaceWith('<span id="lastflower">'.concat($(this).data("flowerData").f + '</span>'));});
+			    if (hiveX == i && hiveY == j){
+			    	flower.bind("click", function(){self.createHexHive();});
 			    }
 			    else {
 			    	flower.bind("click", function(){
@@ -222,40 +222,36 @@ var controller = function () {
 			flowerRGBarray.push(flowerRow);
 		}
 		var ageHolder = self.bee()[0].age();
-		var ageHolder = ageHolder + 1;
+		ageHolder = ageHolder + 1;
 		self.bee()[0].age(ageHolder); 
+		self.bee()[0].pollenCount(0);
 		self.Backpack.pollenCollected = 0;
 		self.Backpack.jellyCollected = 0;
-	}
+	};
 
 	self.updatePos = function(x, y, pollen, jelly){
 		//converting offset coordinates to cube coordinates in order to do distance calculation
 		//http://www.redblobgames.com/grids/hexagons/
-		var oldcubex, oldcubey, oldcubez, newcubex, newcubey, newcubez, oldPollen, oldJelly, oldHoney, oldRoyalJelly, oldQueens, cubeDistance, leftoverEnergy, eventProb, dice;
-		var dialogueText1, dialogueText2, riskButton, runButton;
+		var oldcubex, oldcubey, oldcubez, newcubex, newcubey, newcubez, oldPollen, oldJelly, oldHoney, oldRoyalJelly, oldQueens, cubeDistance, leftoverEnergy, eventProb, eventDice, fateDice, fate;
+		var dialogueText1, dialogueText2, riskButton, runButton, eventText;
 		oldcubex = self.Pos.y;
-		oldcubez = self.Pos.x - (self.Pos.y - (self.Pos.y&1)) / 2
+		oldcubez = self.Pos.x - (self.Pos.y - (self.Pos.y&1)) / 2;
 		oldcubey = -oldcubex - oldcubez;
 
 		newcubex = y;
-		newcubez = x - (y - (y&1)) / 2
+		newcubez = x - (y - (y&1)) / 2;
 		newcubey = -newcubex - newcubez;
 
 		cubeDistance = Math.max(Math.abs(newcubex - oldcubex), Math.abs(newcubey - oldcubey), Math.abs(newcubez - oldcubez));
 		leftoverEnergy = self.bee()[0].maxEnergy() - cubeDistance;
-		self.bee()[0].maxEnergy(leftoverEnergy)
+		self.bee()[0].maxEnergy(leftoverEnergy);
 		self.Pos.x = x;
 		self.Pos.y = y;
-
-		oldJelly = self.Backpack.jellyCollected;
-		self.Backpack.jellyCollected = oldJelly + jelly;
-		oldPollen = self.Backpack.pollenCollected;
-		self.Backpack.pollenCollected = oldPollen + pollen; 
 
 		if (leftoverEnergy <= 0) {
 			document.location.href = "endScreen.html";
 		}
-		if (x == hiveX & y == hiveY) {
+		if (x == hiveX && y == hiveY) {
 			self.bee()[0].maxEnergy(chosenBee.maxEnergy);
 			oldHoney = self.bee()[0].honeyCount();
 			self.bee()[0].honeyCount(oldHoney + self.Backpack.pollenCollected);
@@ -277,27 +273,69 @@ var controller = function () {
 				eventProb = (cubeDistance + 25) / 100;
 				console.log(eventProb);
 			}
-			dice = Math.random();
+			eventDice = Math.random();
 			//clear out any prompts from previous dialogues
 			$('#dialogueWindow').replaceWith("<div id='dialogueWindow'></div>");
-			if (eventProb > dice){
+			if (eventProb > eventDice){
+				fate = colonyThreats[Math.floor(Math.random()*colonyThreats.length)];
+				switch(fate.name){
+					case "pesticide":
+						eventText = '<div>' + fate.text + '</div>'
+						break;
+					case "varroaMite":
+						eventText = '<div>' + fate.text + '</div>'
+						break;
+					case "smallHiveBeetle":
+						eventText = '<div>' + fate.text + '</div>'
+						break;
+					case "parasiticPhoridFly":
+						eventText = '<div>' + fate.text + '</div>'
+						break;
+					case "climateChange":
+						eventText = '<div>' + fate.text + '</div>'
+						break;
+					case "rain":
+						eventText = '<div>' + fate.text + '</div>'
+						break;
+					case "human":
+						eventText = '<div>' + fate.text + '</div>'
+						break;
+					case "lostGeneticDiversity":
+						eventText = '<div>' + fate.text + '</div>'
+						break;
+					case "malnutrition":
+						eventText = '<div>' + fate.text + '</div>'
+						break;						
+					default:
+						$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>Success is the best revenge</div>");
+				}
+
 				dialogueText1 = "<button type='button' class='btn btn-danger active'>Risk</button>";
 				dialogueText2 = "<button type='button' class='btn btn-danger active'>Run</button>";
 				riskButton = $(dialogueText1).bind("click", function(){
-					self.bee()[0].maxEnergy(400);
+					$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>Effect TBD</div>");
 		    	});
 		    	runButton = $(dialogueText2).bind("click", function(){
-					self.bee()[0].maxEnergy(200);
+					$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>Safe but hungry</div>");
 		    	});
+		    	$('#dialogueWindow').append(eventText);
 				$('#dialogueWindow').append(riskButton);
 				$('#dialogueWindow').append(runButton);
 			}
+			//else statement represents normal pollen harvesting with no interference
+			else {
+				oldJelly = self.Backpack.jellyCollected;
+				self.Backpack.jellyCollected = oldJelly + jelly;
+				oldPollen = self.Backpack.pollenCollected;
+				self.Backpack.pollenCollected = oldPollen + pollen; 
+				self.bee()[0].pollenCount(self.Backpack.pollenCollected);
+			}
 		}
-	}
+	};
 };
 
 //apply the knockout observable properties to the controller, essential for dynamic DOM, etc.
-ko.applyBindings(new controller);
+ko.applyBindings(new controller());
 	
 
 
