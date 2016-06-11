@@ -33,76 +33,75 @@ var colonyThreats = [
 	name: 'pesticide',
 	text: 'Neonicotinoid Pesticide present',
 	definition: 'We run this planet dust',	
-	impact: 'honey',
-	effect: '%data% of honey has been lost'
+	posEffect: '%data% pollen obtained',
+	negEffect: 'Overwhelmed, %data% energy has been sapped'
 	},
 	{
 	name: 'varroaMite',
 	text: 'Varroa Mite attacks!',
 	definition: 'External parasitic nightmare',
 	viruses: [{
-			name: 'Deformed wing virus', 
-			effect: 'Deformed wing virus has damaged your appendages and reduced energy capacity', 
-			impact: 'maxEnergy'
+			name: 'deformedWingVirus', 
+			negEffect: 'Deformed wing virus has damaged your appendages and reduced energy capacity by %data%', 
+			posEffect: 'Victory increases max energy by %data%'
 		},
 		{
-			name: 'Black queen cell virus', 
-			effect: 'Black queen cell virus has killed queen larva', 
-			impact: 'queenCount'
+			name: 'blackQueenCellVirus', 
+			negEffect: 'Black queen cell virus has killed a queen larva', 
+			posEffect: 'Victory increases max energy by %data%'
 		},
 		{
-			name: 'Israeli acute paralysis virus',
-			effect: 'Israeli acute paralysis virus has depleted your energy',
-			impact: 'energy'	
+			name: 'israeliAcuteParalysisVirus',
+			negEffect: 'Israeli acute paralysis virus has depleted your energy by %data%',
+			posEffect: 'Victory increases max energy by %data%'	
 		}] 		
 	},
 	{	
 	name: 'smallHiveBeetle',
 	text: 'Small Hive Beetle attacks!',
 	definition: 'Vile beetle that infests hive, damaging honeycomb, laying larvae that defecate in honey... discoloring with feces. The bee equivalent of a frat party.',
-	effect: 'Small Hive Beetle has ransacked the hive and %data% of honey has been lost',
-	impact: 'honey'
+	negEffect: 'Small Hive Beetle has ransacked the hive and %data% of honey has been lost',
+	posEffect: 'Beetle conquered, honey increased by %data%'
 	},
 	{
 	name: 'parasiticPhoridFly',
 	text: 'Parasitic Phorid Fly attacks!',
 	definition: '"Zombie Flies" that lay eggs in your abdomen that slowly grow as you go mad. The larvae emerges from your lifeless carcass through your neck',
-	effect: 'The Parasitic Phorid Fly has successfully implanted egg in your abdomen, max energy will decrease 1 per day. Very Tragic.',
-	impact: 'maxEnergy'	
+	negEffect: 'The Parasitic Phorid Fly has successfully implanted egg in your abdomen, max energy will decrease 1 per day. Very Tragic.',
+	posEffect: 'Victory increases max energy by %data%'	
 	},
 	{
 	name: 'climateChange',
-	text: '1437 pickup trucks pass by, the subsequent warming kills off some plant life.',
-	definition: 'Climate Change, you know that thing that makes people disagree with scientists',
-	impact: 'climate'	
+	text: '1437 pickup trucks pass by, the subsequent warming kills off some potential future plant life.',
+	definition: 'Climate Change',	
 	},
 	{
 	name: 'rain',
 	text: 'Storms a brewin',
 	definition: 'Moisture condensed from the atmosphere that falls visibly in separate drops',
-	effect: 'An afternoon shower washes away fresh paint, hopscotch, and pollen',
-	impact: 'pollen'	
+	negEffect: 'An afternoon shower washes away fresh paint, hopscotch, and all your pollen',
+	posEffect: '%data% pollen obtained'	
 	},
 	{
 	name: 'human',
 	text: 'Frenzied child with tennis racket attacks!',
 	definition: 'It must be summer',
-	effect: 'Your jacked bee body is no match for human recreational activities. Your journey ends here.',
-	impact: 'death'	
+	negEffect: 'Your jacked bee body is no match for human recreational activities. Your journey ends here.',
+	posEffect: 'You sting the child in face, take joy in having inflicted lifelong trauma'	
 	},
 	{
 	name: 'lostGeneticDiversity',
 	text: 'You encounter an industrial bee complex. Mating is not recommended due to lack of genetic variation',
 	definition: 'Insect Insest',
-	effect: 'Queen larva produced eats all your royal jelly and dies.',
-	impact: 'royalJelly'	
+	negEffect: 'Queen larva produced eats all your royal jelly and dies.',
+	posEffect: 'Way to procreate, queen larva increased by 1'	
 	},
 	{
 	name: 'malnutrition',	
 	text: 'You encounter a field of almonds, be careful not to gorge yourself.',
 	definition: 'A wide variety of pollen leads to stronger bees. Variety is the spice of life.',
-	effect: 'A monoculture diet has resulted in 50% less pollen collected',
-	impact: 'pollen'
+	negEffect: 'A monoculture diet has resulted in 50% less pollen collected',
+	posEffect: '%data% pollen obtained'
 	}
 ];
 
@@ -110,6 +109,11 @@ var caliFlowers = ["Calamintha nepetoides", "Linaria purpurea", "Ceanothus - Ray
 
 //bee chosen for adventure, right now just manually chosen in code
 var chosenBee = beeTypes[1];
+
+//global variables
+var climateChangeIndex = 22;
+var data = '%data%';
+var phoridIndex = 0
 
 //beemodel is the knockout observable model object that will dynamically drive my in game statistics
 var beeModel = function(data){
@@ -170,7 +174,7 @@ var controller = function () {
 				else {
 					flowerRoller = Math.floor(100*Math.random()).toString();
 					//random number flowerRoller is the logic determines the color of the hexagon, determining whether it has pollen, royal jelly, or grass
-					if (flowerRoller >= 0 && flowerRoller < 22) {
+					if (flowerRoller >= 0 && flowerRoller < climateChangeIndex) {
 						//pollen, should be yellow hue
 						r = Math.floor(45*Math.random() + 175).toString();
 						g = Math.floor(20*Math.random() + 180).toString();
@@ -227,13 +231,16 @@ var controller = function () {
 		self.bee()[0].pollenCount(0);
 		self.Backpack.pollenCollected = 0;
 		self.Backpack.jellyCollected = 0;
+		if (phoridIndex != 0){
+			chosenBee.maxEnergy = chosenBee.maxEnergy - phoridIndex;
+		}
 	};
 
 	self.updatePos = function(x, y, pollen, jelly){
 		//converting offset coordinates to cube coordinates in order to do distance calculation
 		//http://www.redblobgames.com/grids/hexagons/
 		var oldcubex, oldcubey, oldcubez, newcubex, newcubey, newcubez, oldPollen, oldJelly, oldHoney, oldRoyalJelly, oldQueens, cubeDistance, leftoverEnergy, eventProb, eventDice, fateDice, fate;
-		var dialogueText1, dialogueText2, riskButton, runButton, eventText;
+		var dialogueText1, dialogueText2, riskButton, runButton, eventText, spoils, virusType;
 		oldcubex = self.Pos.y;
 		oldcubez = self.Pos.x - (self.Pos.y - (self.Pos.y&1)) / 2;
 		oldcubey = -oldcubex - oldcubez;
@@ -267,10 +274,11 @@ var controller = function () {
 		else {
 			//RANDOM EVENT CODE
 			if (cubeDistance > 5) {
-				eventProb = 0.30; 
+				eventProb = 1.0; 
 			}
 			else {
-				eventProb = (cubeDistance + 25) / 100;
+				//eventProb = (cubeDistance + 25) / 100;
+				eventProb = 1.0
 				console.log(eventProb);
 			}
 			eventDice = Math.random();
@@ -278,6 +286,7 @@ var controller = function () {
 			$('#dialogueWindow').replaceWith("<div id='dialogueWindow'></div>");
 			if (eventProb > eventDice){
 				fate = colonyThreats[Math.floor(Math.random()*colonyThreats.length)];
+				fateDice = Math.random();
 				switch(fate.name){
 					case "pesticide":
 						eventText = '<div>' + fate.text + '</div>'
@@ -293,6 +302,9 @@ var controller = function () {
 						break;
 					case "climateChange":
 						eventText = '<div>' + fate.text + '</div>'
+						if (climateChangeIndex > 0){
+							climateChangeIndex = climateChangeIndex - 1;
+						}
 						break;
 					case "rain":
 						eventText = '<div>' + fate.text + '</div>'
@@ -312,15 +324,150 @@ var controller = function () {
 
 				dialogueText1 = "<button type='button' class='btn btn-danger active'>Risk</button>";
 				dialogueText2 = "<button type='button' class='btn btn-danger active'>Run</button>";
+				
+				spoils = Math.floor(10*Math.random() + 1);
 				riskButton = $(dialogueText1).bind("click", function(){
-					$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>Effect TBD</div>");
+					switch(fate.name){
+						case "pesticide":
+							if (fateDice > 0.5){
+								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.posEffect.replace(data, spoils) + "</div>");
+								oldPollen = self.Backpack.pollenCollected;
+								self.Backpack.pollenCollected = oldPollen + spoils; 
+								self.bee()[0].pollenCount(self.Backpack.pollenCollected);
+							}
+							else {
+								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.negEffect.replace(data, spoils) + "</div>");
+								leftoverEnergy = self.bee()[0].maxEnergy() - spoils;
+								self.bee()[0].maxEnergy(leftoverEnergy);
+							}
+							break;
+						case "varroaMite":
+							virusType = Math.floor(3*Math.random())
+							if (fateDice > 0.5){
+								switch (fate.viruses[virusType].name) {
+									case "deformedWingVirus":
+										$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.viruses[virusType].posEffect.replace(data, spoils) + "</div>");
+										chosenBee.maxEnergy = chosenBee.maxEnergy + spoils;
+										break;
+									case "blackQueenCellVirus":
+										$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.viruses[virusType].posEffect.replace(data, spoils) + "</div>");
+										chosenBee.maxEnergy = chosenBee.maxEnergy + spoils;
+										break;
+									case "israeliAcuteParalysisVirus":
+										$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.viruses[virusType].posEffect.replace(data, spoils) + "</div>");
+										chosenBee.maxEnergy = chosenBee.maxEnergy + spoils;
+										break;
+									default:
+										$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>Success is the best revenge</div>");
+								}
+							}
+							else {
+								switch (fate.viruses[virusType].name) {
+									case "deformedWingVirus":
+										$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.viruses[virusType].negEffect.replace(data, spoils) + "</div>");
+										chosenBee.maxEnergy = chosenBee.maxEnergy - spoils;
+										break;
+									case "blackQueenCellVirus":
+										oldQueens = self.bee()[0].queenCount();
+										if (oldQueens > 0){
+											self.bee()[0].queenCount(oldQueens - 1);
+											$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.viruses[virusType].negEffect.replace(data, spoils) + "</div>");
+										}
+										else {
+											$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + "There are no queen larva for black queen cell virus to kill" + "</div>");
+										}
+										break;
+									case "israeliAcuteParalysisVirus":
+										$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.viruses[virusType].negEffect.replace(data, spoils) + "</div>");
+										leftoverEnergy = self.bee()[0].maxEnergy() - spoils;
+										self.bee()[0].maxEnergy(leftoverEnergy);
+										break;
+									default:
+										$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>Success is the best revenge</div>");
+								}
+							}
+							break;
+						case "smallHiveBeetle":
+							if (fateDice > 0.5){
+								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.posEffect.replace(data, spoils) + "</div>");
+								oldHoney = self.bee()[0].honeyCount();
+								self.bee()[0].honeyCount(oldHoney + spoils);
+							}
+							else {
+								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.negEffect.replace(data, spoils) + "</div>");
+								oldHoney = self.bee()[0].honeyCount();
+								self.bee()[0].honeyCount(oldHoney - spoils);
+							}
+							break;
+						case "parasiticPhoridFly":
+							if (fateDice > 0.5){
+								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.posEffect.replace(data, spoils) + "</div>");
+								chosenBee.maxEnergy = chosenBee.maxEnergy + spoils;
+							}
+							else {
+								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.negEffect.replace(data, spoils) + "</div>");
+								phoridIndex = phoridIndex + 1;
+							}
+							break;
+						case "rain":
+							if (fateDice > 0.5){
+								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.posEffect.replace(data, spoils) + "</div>");
+								oldPollen = self.Backpack.pollenCollected;
+								self.Backpack.pollenCollected = oldPollen + spoils; 
+								self.bee()[0].pollenCount(self.Backpack.pollenCollected);
+							}
+							else {
+								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.negEffect.replace(data, spoils) + "</div>"); 
+								self.bee()[0].pollenCount(0);
+							}
+							break;
+						case "human":
+							if (fateDice > 0.5){
+								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.posEffect.replace(data, spoils) + "</div>");
+							}
+							else {
+								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.negEffect.replace(data, spoils) + "</div>"); 
+								self.bee()[0].maxEnergy(0);
+							}
+							break;
+						case "lostGeneticDiversity":
+							if (fateDice > 0.5){
+								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.posEffect.replace(data, spoils) + "</div>");
+								oldQueens = self.bee()[0].queenCount();
+								self.bee()[0].queenCount(oldQueens + 1);
+							}
+							else {
+								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.negEffect.replace(data, spoils) + "</div>"); 
+								self.bee()[0].royalJellyCount(0);
+							}
+							break;
+						case "malnutrition":
+							if (fateDice > 0.5){
+								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.posEffect.replace(data, spoils) + "</div>");
+								oldPollen = self.Backpack.pollenCollected;
+								self.Backpack.pollenCollected = oldPollen + spoils; 
+								self.bee()[0].pollenCount(self.Backpack.pollenCollected);
+							}
+							else {
+								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.negEffect.replace(data, spoils) + "</div>"); 
+								oldPollen = Math.floor(self.Backpack.pollenCollected*0.5);
+								self.bee()[0].pollenCount(oldPollen);
+							}
+							break;						
+						default:
+							$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>Success is the best revenge</div>");
+					}
 		    	});
 		    	runButton = $(dialogueText2).bind("click", function(){
 					$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>Safe but hungry</div>");
 		    	});
+
 		    	$('#dialogueWindow').append(eventText);
-				$('#dialogueWindow').append(riskButton);
-				$('#dialogueWindow').append(runButton);
+		    	if (fate.name != "climateChange"){
+		    		$('#dialogueWindow').append(riskButton);
+					$('#dialogueWindow').append(runButton);
+		    	}
+				
 			}
 			//else statement represents normal pollen harvesting with no interference
 			else {
