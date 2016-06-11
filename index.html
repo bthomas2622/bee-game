@@ -3,20 +3,24 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1"> 
-        <title>Bee Game</title>
+        <title>CCD</title>
         <script type="text/javascript" src="js/jquery-1.12.4.js"></script>
         <script type="text/javascript" src="js/bootstrap.js"></script>
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/stylesheet.css">
-        <link rel="stylesheet" href="http://weloveiconfonts.com/api/?family=zocial" />
         <link href='https://fonts.googleapis.com/css?family=Playfair+Display' rel='stylesheet' type='text/css'>
     </head>
     <body>
-        <div class="row">
-            <div class="col-md-12" id="social">
-                <a href="https://github.com/bthomas2622" class="zocial-github"></a>
-                <a href="https://www.linkedin.com/in/benjaminwthomas" class="zocial-linkedin"></a>
-                <a href="https://twitter.com/freebrunch" class="zocial-twitter"></a>
+        <div class="row" id="title">
+            <div class="col-xs-4 col-sm-4 col-md-4 titlerow">
+                <h2 align="right" id="help" data-toggle="modal" data-target="#myModal">How to Play</h1>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 titlerow">
+                <h1>C C D</h1>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 titlerow">
+                <a href="https://github.com/bthomas2622/bee-game">
+                <h2 align="left">GitHub</a>
             </div>
         </div>
         <div class="container">
@@ -28,12 +32,10 @@
                 </div>
                 <div class="col-md-4 col-sm-4">
                     <ul data-bind="foreach: bee">
-                        <li>Energy: <span data-bind="text: maxEnergy"></span></li>
-                        <li>Pollen Count: <span data-bind="text: pollenCount"></span></li>
                         <li>Day: <span data-bind="text: age"></span></li>
-                        <li>Armor: <span data-bind="text: armor"></span></li>
-                        <li>Speed: <span data-bind="text: speed"></span></li>
-                        <li>Sting Strength: <span data-bind="text: stingStrength"></span></li>
+                        <li>Energy: <span data-bind="text: maxEnergy"></span> / <span data-bind="text: maxEnergyCapacity"></span></li>
+                        <li>Pollen Collected: <span data-bind="text: pollenCount"></span></li>
+                        <li>Royal Pollen Collected: <span data-bind="text: royalPollenCount"></span></li>
                     </ul>
                 </div>
                 <div class="col-md-4 col-sm-4">
@@ -64,5 +66,22 @@
         </div>
         <script src="js/knockout-3.2.0.js"></script>
         <script src="js/app.js"></script>
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+              </div>
+              <div class="modal-body">
+                ...
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
     </body>
 </html>

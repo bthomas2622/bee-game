@@ -3,28 +3,26 @@ model can make observable and the controller and associated functions can manipu
 var beeTypes = [
 	{
 	species : 'Honey Bee',
-	maxEnergy : 20,
+	maxEnergy : 25,
+	maxEnergyCapacity : 25,
 	pollenCount : 0,
+	royalPollenCount: 0,
 	honeyCount: 10,
 	queenCount: 0,
 	royalJellyCount: 0,
 	age : 0,
-	speed :  5,
-	stingStrength : 2,
-	armor : 3
 	},
 	{
 	species : 'Carpenter Bee',
 	maxEnergy : 25,
+	maxEnergyCapacity : 25,
 	pollenCount : 0,
+	royalPollenCount: 0,
 	honeyCount: 10,
 	queenCount: 0,
 	royalJellyCount: 0,
 	age : 0,
-	speed :  4,
-	stingStrength : 4,
-	armor : 4
-	},
+	}
 ];
 
 //object that holds all possible bad guys and what could happen to you
@@ -119,14 +117,13 @@ var phoridIndex = 0
 var beeModel = function(data){
 	this.species = ko.observable(data.species);
 	this.maxEnergy = ko.observable(data.maxEnergy);
+	this.maxEnergyCapacity = ko.observable(data.maxEnergyCapacity);
 	this.pollenCount = ko.observable(data.pollenCount);
+	this.royalPollenCount = ko.observable(data.royalPollenCount);
 	this.honeyCount = ko.observable(data.honeyCount);
 	this.queenCount = ko.observable(data.queenCount);
 	this.royalJellyCount = ko.observable(data.royalJellyCount);
 	this.age = ko.observable(data.age);
-	this.speed = ko.observable(data.speed);
-	this.stingStrength = ko.observable(data.stingStrength);
-	this.armor = ko.observable(data.armor);
 };
 
 //Viewmodel/controller where data gets accessed from DOM and search
@@ -155,7 +152,7 @@ var controller = function () {
 
 	//function to create the flowerfield that player bee with traverse
 	self.createHexHive = function() {
-		var i, j, r, g, b, rgb, flowerRoller, RGBobject, flower, formattedrgb, flowerRow = [], pollenLevel, jellyLevel, flowerType, brownRGB;
+		var i, j, r, g, b, rgb, flowerRoller, RGBobject, flower, formattedrgb, flowerRow = [], pollenLevel, jellyLevel, flowerType, brownRGB, oldMaxEnergy;
 		flowerRGBarray = [];
 		//code to remove previous field if exists to regenerate
 		$("div").remove(".hexagon");
@@ -232,7 +229,8 @@ var controller = function () {
 		self.Backpack.pollenCollected = 0;
 		self.Backpack.jellyCollected = 0;
 		if (phoridIndex != 0){
-			chosenBee.maxEnergy = chosenBee.maxEnergy - phoridIndex;
+			oldMaxEnergy = self.bee()[0].maxEnergyCapacity() - phoridIndex;
+			self.bee()[0].maxEnergy(oldMaxEnergy);
 		}
 	};
 
@@ -240,7 +238,7 @@ var controller = function () {
 		//converting offset coordinates to cube coordinates in order to do distance calculation
 		//http://www.redblobgames.com/grids/hexagons/
 		var oldcubex, oldcubey, oldcubez, newcubex, newcubey, newcubez, oldPollen, oldJelly, oldHoney, oldRoyalJelly, oldQueens, cubeDistance, leftoverEnergy, eventProb, eventDice, fateDice, fate;
-		var dialogueText1, dialogueText2, riskButton, runButton, eventText, spoils, virusType;
+		var dialogueText1, dialogueText2, riskButton, runButton, eventText, spoils, virusType, oldMaxEnergy;
 		oldcubex = self.Pos.y;
 		oldcubez = self.Pos.x - (self.Pos.y - (self.Pos.y&1)) / 2;
 		oldcubey = -oldcubex - oldcubez;
@@ -259,27 +257,28 @@ var controller = function () {
 			document.location.href = "endScreen.html";
 		}
 		if (x == hiveX && y == hiveY) {
-			self.bee()[0].maxEnergy(chosenBee.maxEnergy);
+			self.bee()[0].maxEnergy(self.bee()[0].maxEnergyCapacity());
 			oldHoney = self.bee()[0].honeyCount();
-			self.bee()[0].honeyCount(oldHoney + self.Backpack.pollenCollected);
+			self.bee()[0].honeyCount(oldHoney + self.Backpack.pollenCollected - 2);
 			oldRoyalJelly = self.bee()[0].royalJellyCount();
 			self.bee()[0].royalJellyCount(oldRoyalJelly + self.Backpack.jellyCollected);
-			if (self.bee()[0].royalJellyCount() >= 20) {
+			if (self.bee()[0].royalJellyCount() >= 10) {
 				oldRoyalJelly = self.bee()[0].royalJellyCount();
-				self.bee()[0].royalJellyCount(oldRoyalJelly - 20);
+				self.bee()[0].royalJellyCount(0);
 				oldQueens = self.bee()[0].queenCount();
 				self.bee()[0].queenCount(oldQueens + 1);
+			}
+			if (self.bee()[0].honeyCount() < 0){
+				document.location.href = "endScreen.html";
 			}
 		}
 		else {
 			//RANDOM EVENT CODE
-			if (cubeDistance > 5) {
-				eventProb = 1.0; 
+			if (cubeDistance > 10) {
+				eventProb = 0.5; 
 			}
 			else {
-				//eventProb = (cubeDistance + 25) / 100;
-				eventProb = 1.0
-				console.log(eventProb);
+				eventProb = (cubeDistance*5) / 100;
 			}
 			eventDice = Math.random();
 			//clear out any prompts from previous dialogues
@@ -347,15 +346,18 @@ var controller = function () {
 								switch (fate.viruses[virusType].name) {
 									case "deformedWingVirus":
 										$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.viruses[virusType].posEffect.replace(data, spoils) + "</div>");
-										chosenBee.maxEnergy = chosenBee.maxEnergy + spoils;
+										oldMaxEnergy = self.bee()[0].maxEnergyCapacity() + spoils;
+										self.bee()[0].maxEnergyCapacity(oldMaxEnergy);
 										break;
 									case "blackQueenCellVirus":
 										$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.viruses[virusType].posEffect.replace(data, spoils) + "</div>");
-										chosenBee.maxEnergy = chosenBee.maxEnergy + spoils;
+										oldMaxEnergy = self.bee()[0].maxEnergyCapacity() + spoils;
+										self.bee()[0].maxEnergyCapacity(oldMaxEnergy);
 										break;
 									case "israeliAcuteParalysisVirus":
 										$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.viruses[virusType].posEffect.replace(data, spoils) + "</div>");
-										chosenBee.maxEnergy = chosenBee.maxEnergy + spoils;
+										oldMaxEnergy = self.bee()[0].maxEnergyCapacity() + spoils;
+										self.bee()[0].maxEnergyCapacity(oldMaxEnergy);
 										break;
 									default:
 										$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>Success is the best revenge</div>");
@@ -365,7 +367,8 @@ var controller = function () {
 								switch (fate.viruses[virusType].name) {
 									case "deformedWingVirus":
 										$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.viruses[virusType].negEffect.replace(data, spoils) + "</div>");
-										chosenBee.maxEnergy = chosenBee.maxEnergy - spoils;
+										oldMaxEnergy = self.bee()[0].maxEnergyCapacity() - spoils;
+										self.bee()[0].maxEnergyCapacity(oldMaxEnergy);
 										break;
 									case "blackQueenCellVirus":
 										oldQueens = self.bee()[0].queenCount();
@@ -402,7 +405,8 @@ var controller = function () {
 						case "parasiticPhoridFly":
 							if (fateDice > 0.5){
 								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.posEffect.replace(data, spoils) + "</div>");
-								chosenBee.maxEnergy = chosenBee.maxEnergy + spoils;
+								oldMaxEnergy = self.bee()[0].maxEnergyCapacity() + spoils;
+								self.bee()[0].maxEnergy(oldMaxEnergy);
 							}
 							else {
 								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.negEffect.replace(data, spoils) + "</div>");
@@ -457,6 +461,14 @@ var controller = function () {
 						default:
 							$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>Success is the best revenge</div>");
 					}
+					if (fateDice > 0.5){
+						oldJelly = self.Backpack.jellyCollected;
+						self.Backpack.jellyCollected = oldJelly + jelly;
+						oldPollen = self.Backpack.pollenCollected;
+						self.Backpack.pollenCollected = oldPollen + pollen; 
+						self.bee()[0].pollenCount(self.Backpack.pollenCollected);
+						self.bee()[0].royalPollenCount(self.Backpack.jellyCollected);
+					}
 		    	});
 		    	runButton = $(dialogueText2).bind("click", function(){
 					$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>Safe but hungry</div>");
@@ -476,6 +488,7 @@ var controller = function () {
 				oldPollen = self.Backpack.pollenCollected;
 				self.Backpack.pollenCollected = oldPollen + pollen; 
 				self.bee()[0].pollenCount(self.Backpack.pollenCollected);
+				self.bee()[0].royalPollenCount(self.Backpack.jellyCollected);
 			}
 		}
 	};
