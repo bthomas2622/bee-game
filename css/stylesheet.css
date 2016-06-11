@@ -106,17 +106,10 @@ td {
 	border-width: 4px;
 }
 
-h1 {
+h1, h2 {
 	font-family: "Playfair Display", serif;
 	font-weight: bold;
 	font-size: 20px;
-	margin-top: 5px;
-}
-
-h2 {
-	font-family: "Playfair Display", serif;
-	font-size: 20px;
-	font-weight: bold;
 	margin-top: 5px;
 }
 
