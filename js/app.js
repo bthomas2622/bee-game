@@ -140,8 +140,9 @@ var controller = function () {
 	self.Backpack = {pollenCollected:0,jellyCollected:0};
 
 	//the listClick function is how I get from the flower field to the statistics
-	self.listClick = function(clickedFlower) {
+	self.listClick = function() {
 		self.createHexHive();
+		return true;
 	};
 
 	//variables holding temporary strings to be replaced in rgb formatting

@@ -28,7 +28,7 @@
             <div class="row statRow">
                 <div class="col-md-4 col-sm-4">
                     <ul data-bind="foreach: bee">
-                        <li>Species: <span data-bind="text: species, click: $parent.listClick"></span></li>
+                        <li>Species: <span data-bind="text: species"></span></li>
                     </ul>
                 </div>
                 <div class="col-md-4 col-sm-4">
@@ -47,8 +47,8 @@
                     </ul>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12" id="flowerfield">
+            <div class="row" data-bind="with: bee">
+                <div class="col-md-12" id="flowerfield" data-bind="event: {onload: $parent.listClick()}">
                 </div>
             </div>
              <div class="row gameData">
