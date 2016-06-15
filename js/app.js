@@ -111,7 +111,9 @@ var chosenBee = beeTypes[1];
 //global variables
 var climateChangeIndex = 22;
 var data = '%data%';
-var phoridIndex = 0
+var phoridIndex = 0;
+var totalHoney = 0;
+var totalJelly = 0; 
 
 //beemodel is the knockout observable model object that will dynamically drive my in game statistics
 var beeModel = function(data){
@@ -207,7 +209,7 @@ var controller = function () {
 				formattedrgb = formattedrgb.replace(bdata, b);    
 			    flower = $(formattedrgb).addClass('hexagon').data("flowerData", {x:i, y:j, p: pollenLevel, j: jellyLevel, f: flowerType});
 			    flower.on("click", function(){self.updatePos($(this).data("flowerData").x, $(this).data("flowerData").y, $(this).data("flowerData").p, $(this).data("flowerData").j);});
-			    flower.on("click", function(){$('#lastflower').replaceWith('<span id="lastflower">'.concat($(this).data("flowerData").f + '</span>'));});
+			    //flower.on("click", function(){$('#lastflower').replaceWith('<span id="lastflower">'.concat($(this).data("flowerData").f + '</span>'));});
 			    if (hiveX == i && hiveY == j){
 			    	flower.on("click", function(){self.createHexHive();});
 			    }
@@ -225,6 +227,9 @@ var controller = function () {
 		}
 		var ageHolder = self.bee()[0].age();
 		ageHolder = ageHolder + 1;
+		if (ageHolder > 120){
+			self.endScreen("age");
+		}
 		self.bee()[0].age(ageHolder); 
 		self.bee()[0].pollenCount(0);
 		self.Backpack.pollenCollected = 0;
@@ -255,22 +260,24 @@ var controller = function () {
 		self.Pos.y = y;
 
 		if (leftoverEnergy < 0) {
-			document.location.href = "endScreen.html";
+			self.endScreen("energy");
 		}
 		if (x == hiveX && y == hiveY) {
 			self.bee()[0].maxEnergy(self.bee()[0].maxEnergyCapacity());
 			oldHoney = self.bee()[0].honeyCount();
+			totalHoney = totalHoney + self.Backpack.pollenCollected;
 			self.bee()[0].honeyCount(oldHoney + self.Backpack.pollenCollected - 5);
 			oldRoyalJelly = self.bee()[0].royalJellyCount();
+			totalJelly = totalJelly + self.Backpack.jellyCollected;
 			self.bee()[0].royalJellyCount(oldRoyalJelly + self.Backpack.jellyCollected);
 			if (self.bee()[0].royalJellyCount() >= 10) {
 				oldRoyalJelly = self.bee()[0].royalJellyCount();
-				self.bee()[0].royalJellyCount(0);
+				self.bee()[0].royalJellyCount(oldRoyalJelly - 10);
 				oldQueens = self.bee()[0].queenCount();
 				self.bee()[0].queenCount(oldQueens + 1);
 			}
 			if (self.bee()[0].honeyCount() < 0){
-				document.location.href = "endScreen.html";
+				self.endScreen("honey");
 			}
 		}
 		else {
@@ -280,7 +287,6 @@ var controller = function () {
 			}
 			else {
 				eventProb = (cubeDistance + 20) / 100;
-				console.log(eventProb);
 			}
 			eventDice = Math.random();
 			//clear out any prompts from previous dialogues
@@ -437,7 +443,7 @@ var controller = function () {
 							}
 							else {
 								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.negEffect.replace(data, spoils) + "</div>"); 
-								self.bee()[0].maxEnergy(0);
+								self.endScreen("human");
 							}
 							break;
 						case "lostGeneticDiversity":
@@ -478,8 +484,6 @@ var controller = function () {
 		    	});
 		    	runButton = $(dialogueText2).on("click", function(){
 					$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>Safe but hungry</div>");
-					console.log(x);
-					console.log(y);
 					$(".hexagon").show();
 		    	});
 
@@ -500,6 +504,38 @@ var controller = function () {
 			}
 		}
 	};
+
+	self.endScreen = function(cause){
+		var results = '<h1>GAME OVER</h1><h3>%reasondeath%</h3><ul><li>Days: %ddata%</li><li>Total Honey Produced: %hdata%</li><li>Total Royal Jelly Produced: %rdata%</li><li>Queens Produced: %qdata%</li></ul><h3>Thanks for playing!<h3>'; 
+		results = results.replace('%ddata%', self.bee()[0].age());
+		results = results.replace('%hdata%', totalHoney);
+		results = results.replace('%rdata%', totalJelly);
+		results = results.replace('%qdata%', self.bee()[0].queenCount());
+		switch(cause){
+			case "honey":
+				results = results.replace('%reasondeath%', "Without honey, you cannot produce energy to continue")
+				break;
+			case "human":
+				results = results.replace('%reasondeath%', "Your jacked bee body is no match for human recreational activities. Your journey ends here.")
+				break;
+			case "energy":
+				results = results.replace('%reasondeath%', "You have run out of energy. Destined to become one with the flower field.")
+				break;
+			case "age":
+				results = results.replace('%reasondeath%', "Congratulations! You have lasted the full arbitrary lifespan of a bee!")
+				break;
+			default:
+		}
+		$('#flowerfield').hide();
+		$('.statRow').hide();
+		$('.gameData').hide();
+		$('.container').append('<div class="row"><div class="col-md-12" id="end">' + results + '</div></div>');
+		var replay = "<button type='button' class='btn btn-danger active'>Play Again</button>";
+		replay = $(replay).on("click", function(){
+			location.reload();
+		})
+		$('#end').append(replay);
+	}
 };
 
 //apply the knockout observable properties to the controller, essential for dynamic DOM, etc.

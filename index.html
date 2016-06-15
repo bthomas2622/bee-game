@@ -42,13 +42,13 @@
                 </div>
                 <div class="col-md-4 col-sm-4 col-xs-4">
                     <ul data-bind="foreach: bee">
-                        <li>Honey Produced: <span data-bind="text: honeyCount"></span></li>
-                        <li>Royal Jelly Produced: <span data-bind="text: royalJellyCount"></span></li>
+                        <li>Honey Reserves: <span data-bind="text: honeyCount"></span></li>
+                        <li>Royal Jelly Count: <span data-bind="text: royalJellyCount"></span></li>
                         <li>Queens Produced: <span data-bind="text: queenCount"></span></li>
                     </ul>
                 </div>
             </div>
-            <div class="row" data-bind="with: bee">
+            <div class="row field" data-bind="with: bee">
                 <div class="col-md-12" id="flowerfield" data-bind="event: {onload: $parent.listClick()}">
                 </div>
             </div>
