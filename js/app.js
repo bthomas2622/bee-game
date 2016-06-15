@@ -70,7 +70,7 @@ var colonyThreats = [
 	},
 	{
 	name: 'climateChange',
-	text: '1437 pickup trucks pass by, the subsequent warming kills off some potential future plant life.',
+	text: 'Humans scoff at clean energy, the subsequent warming kills off some potential future plant life.',
 	definition: 'Climate Change',	
 	},
 	{
@@ -206,13 +206,13 @@ var controller = function () {
 				formattedrgb = formattedrgb.replace(gdata, g);  
 				formattedrgb = formattedrgb.replace(bdata, b);    
 			    flower = $(formattedrgb).addClass('hexagon').data("flowerData", {x:i, y:j, p: pollenLevel, j: jellyLevel, f: flowerType});
-			    flower.bind("click", function(){self.updatePos($(this).data("flowerData").x, $(this).data("flowerData").y, $(this).data("flowerData").p, $(this).data("flowerData").j);});
-			    flower.bind("click", function(){$('#lastflower').replaceWith('<span id="lastflower">'.concat($(this).data("flowerData").f + '</span>'));});
+			    flower.on("click", function(){self.updatePos($(this).data("flowerData").x, $(this).data("flowerData").y, $(this).data("flowerData").p, $(this).data("flowerData").j);});
+			    flower.on("click", function(){$('#lastflower').replaceWith('<span id="lastflower">'.concat($(this).data("flowerData").f + '</span>'));});
 			    if (hiveX == i && hiveY == j){
-			    	flower.bind("click", function(){self.createHexHive();});
+			    	flower.on("click", function(){self.createHexHive();});
 			    }
 			    else {
-			    	flower.bind("click", function(){
+			    	flower.on("click", function(){
 			    		$(this).addClass("usedFlower");
 			    		$(this).data("flowerData").p = 0;
 			    		$(this).data("flowerData").j = 0;
@@ -254,13 +254,13 @@ var controller = function () {
 		self.Pos.x = x;
 		self.Pos.y = y;
 
-		if (leftoverEnergy <= 0) {
+		if (leftoverEnergy < 0) {
 			document.location.href = "endScreen.html";
 		}
 		if (x == hiveX && y == hiveY) {
 			self.bee()[0].maxEnergy(self.bee()[0].maxEnergyCapacity());
 			oldHoney = self.bee()[0].honeyCount();
-			self.bee()[0].honeyCount(oldHoney + self.Backpack.pollenCollected - 2);
+			self.bee()[0].honeyCount(oldHoney + self.Backpack.pollenCollected - 5);
 			oldRoyalJelly = self.bee()[0].royalJellyCount();
 			self.bee()[0].royalJellyCount(oldRoyalJelly + self.Backpack.jellyCollected);
 			if (self.bee()[0].royalJellyCount() >= 10) {
@@ -286,6 +286,8 @@ var controller = function () {
 			//clear out any prompts from previous dialogues
 			$('#dialogueWindow').replaceWith("<div id='dialogueWindow'></div>");
 			if (eventProb > eventDice){
+				//pause flowerfield traversal while an event requires attention
+				$(".hexagon").hide();
 				fate = colonyThreats[Math.floor(Math.random()*colonyThreats.length)];
 				fateDice = Math.random();
 				switch(fate.name){
@@ -306,6 +308,7 @@ var controller = function () {
 						if (climateChangeIndex > 0){
 							climateChangeIndex = climateChangeIndex - 1;
 						}
+						$(".hexagon").show();
 						break;
 					case "rain":
 						eventText = '<div>' + fate.text + '</div>'
@@ -327,7 +330,8 @@ var controller = function () {
 				dialogueText2 = "<button type='button' class='btn btn-danger active'>Run</button>";
 				
 				spoils = Math.floor(10*Math.random() + 1);
-				riskButton = $(dialogueText1).bind("click", function(){
+				riskButton = $(dialogueText1).on("click", function(){
+					$(".hexagon").show();
 					switch(fate.name){
 						case "pesticide":
 							if (fateDice > 0.5){
@@ -472,8 +476,11 @@ var controller = function () {
 						self.bee()[0].royalPollenCount(self.Backpack.jellyCollected);
 					}
 		    	});
-		    	runButton = $(dialogueText2).bind("click", function(){
+		    	runButton = $(dialogueText2).on("click", function(){
 					$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>Safe but hungry</div>");
+					console.log(x);
+					console.log(y);
+					$(".hexagon").show();
 		    	});
 
 		    	$('#dialogueWindow').append(eventText);
@@ -481,7 +488,6 @@ var controller = function () {
 		    		$('#dialogueWindow').append(riskButton);
 					$('#dialogueWindow').append(runButton);
 		    	}
-				
 			}
 			//else statement represents normal pollen harvesting with no interference
 			else {

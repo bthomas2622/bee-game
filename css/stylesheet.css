@@ -134,6 +134,27 @@ a:hover {
 	text-decoration: none;
 }
 
+#dialogueWindow div {
+	color: #ffb019;
+	font-size: 20px;
+	font-family: 'Bangers', serif;
+	font-weight: normal;
+}
+
+#dialogueWindow {
+	color: #5990cc;
+	font-size: 20px;
+	font-family: 'Bangers', serif;
+	font-weight: normal;
+}
+
+#dialogueWindow button {
+	color: white;
+	font-size: 18px;
+	font-family: "Playfair Display", serif;
+	font-weight: normal;
+}
+
 /* Modal Stuff */
 .modal-content {
 	background-color: #f1ce92;
