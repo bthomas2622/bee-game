@@ -58,7 +58,7 @@ var colonyThreats = [
 	name: 'smallHiveBeetle',
 	text: 'Small Hive Beetle attacks!',
 	definition: 'Vile beetle that infests hive, damaging honeycomb, laying larvae that defecate in honey... discoloring with feces. The bee equivalent of a frat party.',
-	negEffect: 'Small Hive Beetle has ransacked the hive and %data% of honey has been lost',
+	negEffect: 'Small Hive Beetle has ransacked the hive and %data% honey has been lost',
 	posEffect: 'Beetle conquered, honey increased by %data%'
 	},
 	{
@@ -231,7 +231,7 @@ var controller = function () {
 		self.Backpack.jellyCollected = 0;
 		if (phoridIndex != 0){
 			oldMaxEnergy = self.bee()[0].maxEnergyCapacity() - phoridIndex;
-			self.bee()[0].maxEnergy(oldMaxEnergy);
+			self.bee()[0].maxEnergyCapacity(oldMaxEnergy);
 		}
 	};
 
@@ -275,11 +275,12 @@ var controller = function () {
 		}
 		else {
 			//RANDOM EVENT CODE
-			if (cubeDistance > 10) {
+			if (cubeDistance > 5) {
 				eventProb = 0.5; 
 			}
 			else {
-				eventProb = (cubeDistance*5) / 100;
+				eventProb = (cubeDistance + 20) / 100;
+				console.log(eventProb);
 			}
 			eventDice = Math.random();
 			//clear out any prompts from previous dialogues

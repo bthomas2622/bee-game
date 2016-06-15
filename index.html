@@ -26,12 +26,12 @@
         </div>
         <div class="container">
             <div class="row statRow">
-                <div class="col-md-4 col-sm-4">
+                <div class="col-md-4 col-sm-4 col-xs-4">
                     <ul data-bind="foreach: bee">
                         <li>Species: <span data-bind="text: species"></span></li>
                     </ul>
                 </div>
-                <div class="col-md-4 col-sm-4">
+                <div class="col-md-4 col-sm-4 col-xs-4">
                     <ul data-bind="foreach: bee">
                         <li>Day: <span data-bind="text: age"></span></li>
                         <li>Energy: <span data-bind="text: maxEnergy"></span> / <span data-bind="text: maxEnergyCapacity"></span></li>
@@ -39,7 +39,7 @@
                         <li>Royal Pollen Collected: <span data-bind="text: royalPollenCount"></span></li>
                     </ul>
                 </div>
-                <div class="col-md-4 col-sm-4">
+                <div class="col-md-4 col-sm-4 col-xs-4">
                     <ul data-bind="foreach: bee">
                         <li>Honey Produced: <span data-bind="text: honeyCount"></span></li>
                         <li>Royal Jelly Produced: <span data-bind="text: royalJellyCount"></span></li>
@@ -52,15 +52,15 @@
                 </div>
             </div>
              <div class="row gameData">
-                <div class="col-md-4 col-sm-4">
+                <div class="col-md-4 col-sm-4 col-xs-4">
                     <h3>Last Flower Visited</h3>
                     <span id="lastflower"></span>
                 </div>
-                <div class="col-md-4 col-sm-4">
+                <div class="col-md-4 col-sm-4 col-xs-4">
                     <h3>Game Dialogue</h3>
                     <div id="dialogueWindow"></div>
                 </div>
-                <div class="col-md-4 col-sm-4">
+                <div class="col-md-4 col-sm-4 col-xs-4">
                     <h3>Weather Conditions</h3>
                 </div>
             </div>
@@ -73,10 +73,54 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                <h1 class="modal-title" id="myModalLabel">How to Play</h1>
               </div>
               <div class="modal-body">
-                ...
+                <div>
+                    <p>The average lifespan of the Western honey bee is 1 to 10 months. Since this is quite a large range, and the type of bee varies in this game… your lifespan is approximated to be 4 months or 120 days. This means you must maximize your precious, average amount of bee time producing royal jelly in order to produce as many Queens as possible!</p>
+                </div>
+                <div>
+                    <h2>The Map</h2>
+                    <p>
+                        What you see before your 5 bee eyes is a majestic Oakland flower field. The green hexagons represent grassy patches. The yellow hexagons represent pollen coated flowers that yield 1 pollen per visit. And the purplish hexagons represent special flowers that yield 1 gamified “royal jelly pollen” per visit. This special pollen is the only pollen able to produce royal jelly.
+                    </p>
+                    <div id="hexDemo">
+                        <div style="background-color: yellow;" class="hexagonDummy"></div>
+                        <div style="background-color: green;" class="hexagonDummy"></div>
+                        <div style="background-color: purple;" class="hexagonDummy"></div>
+                    </div>
+                    <p>
+                        Click a hexagonal space to fly to it! The distance from your current location will be subtracted from your energy reserves. Previously visited flowers will turn a shade of brown. 
+                    </p>
+                    <p style="margin-bottom:0px">
+                        You will start and end every day at the white “home hive” position. There you will deliver pollen, replenish energy, and regenerate the flower field for a new day of feasting. 
+                    </p>
+                    <div id="hexDemo2">
+                        <div style="background-color: white;" class="hexagonDummy"></div>
+                    </div>
+                </div>
+                <div>
+                    <h2>Attributes</h2>
+                    <ul>
+                        <li><span class="emphasis">Species</span> – Not all bees are alike.</li>
+                        <li><span class="emphasis">Day</span> – Each time you return to home hive a day has passed, and you are one day closer to bee heaven.</li>
+                        <li><span class="emphasis">Energy</span> – <span class="callout">Energy</span> is expended flying from flower to flower. Each hexagonal space traversed expends precisely 1 <span class="callout">energy</span>. <span class="callout">Energy</span> is fully replenished upon return to home hive. If you completely run out of <span class="callout">energy</span> you perish.</li> 
+                        <li><span class="emphasis">Pollen Collected</span> – Think of this as your <span class="callout">“pollen backback”</span>. This statistic keeps track of how much <span class="callout">pollen</span> you have collected on a flight. Regular <span class="callout">pollen</span> translates 1 to 1 with <span class="callout">honey produced</span> upon return to home hive.</li> 
+                        <li><span class="emphasis">Royal Pollen Collected</span> – Your separate <span class="callout">“royal pollen backpack”</span> tracks how much <span class="callout">royal pollen</span> you have collected on a flight. <span class="callout">Royal pollen</span> translates 1 to 1 with <span class="callout">royal jelly</span> produced upon return to home hive.</li> 
+                        <li><span class="emphasis">Honey Produced</span> – <span class="callout">Honey</span> is created by bringing regular <span class="callout">pollen</span> back to home hive. <span class="callout">Honey</span> is your sole energy source! 5 <span class="callout">honey</span> is expended to replenish your energy upon return to home hive. Run out of <span class="callout">honey</span> and you will no longer be able to continue!</li>
+                        <li><span class="emphasis">Royal Jelly Produced</span> – <span class="callout">Royal Jelly</span> is fed to all the larvae in the colony, but it is most important because the only way to make a new <span class="callout">queen</span> is to feed chosen larvae copious amounts of <span class="callout">royal jelly</span> to trigger development of “queen morphology”. Every 10 <span class="callout">royal jelly</span> produced results in creation of a new <span class="callout">queen</span>!</li>
+                        <li><span class="emphasis">Queens Produced</span> – Your most important attribute! Collect <span class="callout">royal jelly</span>, produce as many <span class="callout">queens</span> as possible in 120 days, resist the evil Colony Collapse Disorder scourge!</li>
+                    </ul>
+                </div>
+                <div>
+                    <h2>Game Dialogue</h2>
+                    <p>
+                        The life of a bee is dangerous work. Flying to new locations presents possible dangers. All these dangers combined represent “Colony Collapse Disorder” contributors. 
+                    </p>
+                    <p>
+                        Whenever an encounter takes place a decision must be made before proceeding. Risk it all for riches and reward, or run to buzz another day.
+                    </p>
+                </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

@@ -7,7 +7,7 @@ body {
 	color: white;
 }
 
-ul li {
+.container ul li {
 	list-style: none;
 	font-weight: bold;
 }
@@ -132,4 +132,75 @@ a:hover {
 	color: black;
 	cursor: pointer;
 	text-decoration: none;
+}
+
+/* Modal Stuff */
+.modal-content {
+	background-color: #f1ce92;
+}
+
+.modal-body {
+	color: #121E25;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+#myModalLabel {
+	color: #121E25;
+	font-family: "Playfair Display", serif;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.emphasis {
+	text-decoration: underline;
+}
+
+.callout {
+	font-style: italic;
+}
+
+#hexDemo {
+	padding-bottom: 15px;
+	padding-left: 30px;
+}
+
+#hexDemo2 {
+	padding-bottom: 0px;
+	padding-top: 10px;
+	padding-left: 30px;
+}
+
+/* Honeycomb CSS */
+.hexagonDummy {
+	position: relative;
+	display: inline-block;
+	/* left/right margin approx. 25% of .hexagon width + spacing */
+	margin: -1.2px 4.2px;
+}
+.hexagonDummy, .hexagonDummy::before, .hexagonDummy::after {
+	/* easy way: height is width * 1.732, actual formula is 2*(width/(2*Math.tan(Math.PI/6))) */
+	width: 15px;
+	height: 26px;
+	border-radius: 15%/3%;
+}
+.hexagonDummy::before {
+	background-color: inherit;
+	content: "";
+	position: absolute;
+	transform: rotate(-60deg);
+}
+.hexagonDummy::after {
+	background-color: inherit;
+	content: "";
+	position: absolute;
+	transform: rotate(60deg);
+}
+.hexagonDummy:nth-child(even) {
+	/* top approx. 50% of .hexagon height + spacing */
+	top: 15px;
+}
+.hexagonDummy:hover {
+	opacity: .6;
+	cursor: pointer;
 }
