@@ -1,0 +1,36 @@
+* {
+	font-family: 'Anton', sans-serif;
+}
+
+body {
+	background-color: #f1ce92;
+	color: black;
+	text-align: center;
+}
+
+#bio {
+	font-family: sans-serif;
+	border-style: dashed;
+	border-width: 5px;
+	border-radius: 3px;
+	border-color: black;
+	padding: 10px;
+	font-weight: bold;
+}
+
+#welcome {
+	padding-top: 20px;
+}
+
+.container ul li {
+	list-style: none;
+	font-weight: bold;
+}
+
+.btn {
+	margin-top: 15px;
+}
+
+#name {
+	margin-top: 30px;
+}
