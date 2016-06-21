@@ -17,11 +17,11 @@
                 <h2 align="right" id="help" data-toggle="modal" data-target="#myModal">How to Play</h2>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 titlerow">
-                <a href="https://en.wikipedia.org/wiki/Colony_collapse_disorder">
+                <a href="https://en.wikipedia.org/wiki/Colony_collapse_disorder" target="_blank">
                 <h1>C C D</h1></a>
             </div>
             <div class="col-xs-4 col-sm-4 col-md-4 titlerow">
-                <a href="https://github.com/bthomas2622/bee-game">
+                <a href="https://github.com/bthomas2622/bee-game" target="_blank">
                 <h2 align="left">GitHub</h2></a>
             </div>
         </div>
@@ -62,7 +62,8 @@
                     <div id="dialogueWindow"></div>
                 </div>
                 <div class="col-md-4 col-sm-4 col-xs-4">
-                    <h3 id="weatherCond">Weather Conditions</h3>
+                    <h3 id="weatherCond">Current Oakland Weather</h3>
+                    <span id="currentWeather"></span>
                 </div>
             </div>
         </div>
@@ -99,6 +100,12 @@
                     </p>
                     <div id="hexDemo2">
                         <div style="background-color: white;" class="hexagonDummy"></div>
+                    </div>
+                    <p style="margin-bottom:0px">
+                        The black hexagon represents your current position! 
+                    </p>
+                    <div id="hexDemo2">
+                        <div style="background-color: black;" class="hexagonDummy"></div>
                     </div>
                 </div>
                 <div>

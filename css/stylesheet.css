@@ -41,10 +41,20 @@ td {
 	background-color: #544017 !important; 
 }
 
+.currentFlower {
+	background-color: black !important; 
+}
+
 .btn {
 	margin-left: 10px;
 	margin-top: 10px;
 	font-size: 14px;
+}
+
+#finalQueenCount {
+	font-style: italic;
+	color: #e4a208;
+	font-size: 16px; 
 }
 
 

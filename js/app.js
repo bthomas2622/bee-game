@@ -13,6 +13,39 @@ var beeTypes = [
 	age : 0,
 	},
 	{
+	species : 'Bumble Bee',
+	maxEnergy : 25,
+	maxEnergyCapacity : 25,
+	pollenCount : 0,
+	royalPollenCount: 0,
+	honeyCount: 10,
+	queenCount: 0,
+	royalJellyCount: 0,
+	age : 0,
+	},
+	{
+	species : 'Mining Bee',
+	maxEnergy : 25,
+	maxEnergyCapacity : 25,
+	pollenCount : 0,
+	royalPollenCount: 0,
+	honeyCount: 10,
+	queenCount: 0,
+	royalJellyCount: 0,
+	age : 0,
+	},
+	{
+	species : 'Leafcutting Bee',
+	maxEnergy : 25,
+	maxEnergyCapacity : 25,
+	pollenCount : 0,
+	royalPollenCount: 0,
+	honeyCount: 10,
+	queenCount: 0,
+	royalJellyCount: 0,
+	age : 0,
+	},
+	{
 	species : 'Carpenter Bee',
 	maxEnergy : 25,
 	maxEnergyCapacity : 25,
@@ -106,7 +139,7 @@ var colonyThreats = [
 var caliFlowers = ["Calamintha nepetoides", "Linaria purpurea", "Ceanothus - Ray Hartman", "Erigeron karvinskianus", "Grindelia stricta", "Erigeron glaucus - Wayne Roderick", "Lavandula stoechas", "Nepeta faasennii", "Vitex agnus-castus", "Salvia mellifera", "Solidago californica", "Layia platyglossa", "Eriogonum grande rubescens", "Eschscholzia californica", "Salvia - Indigo Spires", "Cosmos sulphureus", "Caryoteris incana - Bluebeard", "Penstemon heterophyllus", "Lavandula intermedia - Provence", "Salvia microphylla - Hot Lips", "Gilia capitata", "Rudbeckia hirta", "Bidens ferulifolia", "Echium candicans", "Helianthus annuus - Sunflower", "Cosmos bipinnatus", "Salvia uliginosa", "Gaillardia grandiflora - Oranges and Lemons", "Phacelia tanancetifolia"];
 
 //bee chosen for adventure, right now just manually chosen in code
-var chosenBee = beeTypes[1];
+var chosenBee = beeTypes[Math.floor(Math.random()*beeTypes.length)];
 
 //global variables
 var climateChangeIndex = 22;
@@ -209,13 +242,15 @@ var controller = function () {
 				formattedrgb = formattedrgb.replace(bdata, b);    
 			    flower = $(formattedrgb).addClass('hexagon').data("flowerData", {x:i, y:j, p: pollenLevel, j: jellyLevel, f: flowerType});
 			    flower.on("click", function(){self.updatePos($(this).data("flowerData").x, $(this).data("flowerData").y, $(this).data("flowerData").p, $(this).data("flowerData").j);});
-			    //flower.on("click", function(){$('#lastflower').replaceWith('<span id="lastflower">'.concat($(this).data("flowerData").f + '</span>'));});
+			    flower.on("click", function(){$('#lastflower').replaceWith('<span id="lastflower">'.concat($(this).data("flowerData").f + '</span>'));});
 			    if (hiveX == i && hiveY == j){
 			    	flower.on("click", function(){self.createHexHive();});
 			    }
 			    else {
 			    	flower.on("click", function(){
 			    		$(this).addClass("usedFlower");
+			    		$("div").removeClass("currentFlower");
+			    		$(this).addClass("currentFlower");
 			    		$(this).data("flowerData").p = 0;
 			    		$(this).data("flowerData").j = 0;
 			    	});
@@ -506,7 +541,7 @@ var controller = function () {
 	};
 
 	self.endScreen = function(cause){
-		var results = '<h1>GAME OVER</h1><h3>%reasondeath%</h3><ul><li>Days: %ddata%</li><li>Total Honey Produced: %hdata%</li><li>Total Royal Jelly Produced: %rdata%</li><li>Queens Produced: %qdata%</li></ul><h3>Thanks for playing!<h3>'; 
+		var results = '<h1>GAME OVER</h1><h3>%reasondeath%</h3><ul><li>Days Lasted: %ddata%</li><li>Total Honey Produced: %hdata%</li><li>Total Royal Jelly Produced: %rdata%</li><li id="finalQueenCount">Queens Produced: %qdata%</li></ul><h3>Thanks for playing!<h3>'; 
 		results = results.replace('%ddata%', self.bee()[0].age());
 		results = results.replace('%hdata%', totalHoney);
 		results = results.replace('%rdata%', totalJelly);
