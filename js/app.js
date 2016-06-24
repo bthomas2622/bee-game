@@ -116,7 +116,7 @@ var colonyThreats = [
 	{
 	name: 'human',
 	text: 'Frenzied child with tennis racket attacks!',
-	definition: 'It must be summer',
+	definition: 'You are lucky they arent trying to set you on fire.',
 	negEffect: 'Your jacked bee body is no match for human recreational activities. Your journey ends here.',
 	posEffect: 'You sting the child in face, take joy in having inflicted lifelong trauma'	
 	},
@@ -316,7 +316,7 @@ var controller = function () {
 		else {
 			//RANDOM EVENT CODE
 			if (cubeDistance > 5) {
-				eventProb = 0.5; 
+				eventProb = 0.3; 
 			}
 			else {
 				eventProb = (cubeDistance + 20) / 100;
