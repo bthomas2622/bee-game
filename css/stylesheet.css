@@ -23,9 +23,13 @@ td {
 	color: transparent;
 } 
 
-#flowerfield, #end {
+#flowerfield, #end{
 	width: 500px;
 	margin: 20px auto;
+}
+
+#eventPic {
+	margin: 5px 25%;
 }
 
 .flower {
@@ -75,6 +79,9 @@ td {
 	#flowerfield, #end {
 		width: 500px;
 		margin: 20px 25%;
+	}
+	#eventPic {
+		margin: 5px 25%;
 	}
 }
 
@@ -126,11 +133,6 @@ h1, h2 {
 	margin-top: 5px;
 }
 
-img {
-	max-height: 25px;
-	margin-top: 5px;
-}
-
 #help:hover {
 	cursor: pointer;
 	color: black;
@@ -161,11 +163,27 @@ a:hover {
 	font-weight: normal;
 }
 
-#dialogueWindow button {
+#dialogueWindow #decision {
 	color: white;
 	font-size: 18px;
 	font-family: "Playfair Display", serif;
+	font-weight: bold;
+}
+
+#definitionText {
+	color: white;
+	font-size: 16px;
+	font-family: 'Playfair Display', serif;
 	font-weight: normal;
+	padding-top: 15px;
+	text-align: center;
+}
+
+#dialogueWindow #definition {
+	color: black;
+	font-size: 18px;
+	font-family: "Playfair Display", serif;
+	font-weight: bold;
 }
 
 /* Modal Stuff */

@@ -269,10 +269,6 @@ var controller = function () {
 		self.bee()[0].pollenCount(0);
 		self.Backpack.pollenCollected = 0;
 		self.Backpack.jellyCollected = 0;
-		if (phoridIndex != 0){
-			oldMaxEnergy = self.bee()[0].maxEnergyCapacity() - phoridIndex;
-			self.bee()[0].maxEnergyCapacity(oldMaxEnergy);
-		}
 	};
 
 	self.updatePos = function(x, y, pollen, jelly){
@@ -298,6 +294,8 @@ var controller = function () {
 			self.endScreen("energy");
 		}
 		if (x == hiveX && y == hiveY) {
+			oldMaxEnergy = self.bee()[0].maxEnergyCapacity() - phoridIndex;
+			self.bee()[0].maxEnergyCapacity(oldMaxEnergy);
 			self.bee()[0].maxEnergy(self.bee()[0].maxEnergyCapacity());
 			oldHoney = self.bee()[0].honeyCount();
 			totalHoney = totalHoney + self.Backpack.pollenCollected;
@@ -328,51 +326,60 @@ var controller = function () {
 			$('#dialogueWindow').replaceWith("<div id='dialogueWindow'></div>");
 			if (eventProb > eventDice){
 				//pause flowerfield traversal while an event requires attention
-				$(".hexagon").hide();
+				$("#flowerfield").hide();
 				fate = colonyThreats[Math.floor(Math.random()*colonyThreats.length)];
 				fateDice = Math.random();
 				switch(fate.name){
 					case "pesticide":
 						eventText = '<div>' + fate.text + '</div>'
+						$('#eventPic').replaceWith("<div class='col-md-12' id='eventPic'><img class='img-responsive img-rounded' src='art/pesticide400.png' alt='pesticide'></div>").show();
 						break;
 					case "varroaMite":
 						eventText = '<div>' + fate.text + '</div>'
+						$('#eventPic').replaceWith("<div class='col-md-12' id='eventPic'><img class='img-responsive img-rounded' src='art/varroamite400.png' alt='varroa mite'></div>").show();
 						break;
 					case "smallHiveBeetle":
 						eventText = '<div>' + fate.text + '</div>'
+						$('#eventPic').replaceWith("<div class='col-md-12' id='eventPic'><img class='img-responsive img-rounded' src='art/beetle400.png' alt='small hive beetle'></div>").show();
 						break;
 					case "parasiticPhoridFly":
 						eventText = '<div>' + fate.text + '</div>'
+						$('#eventPic').replaceWith("<div class='col-md-12' id='eventPic'><img class='img-responsive img-rounded' src='art/phorid400.png' alt='parasitic phorid fly'></div>").show();
 						break;
 					case "climateChange":
 						eventText = '<div>' + fate.text + '</div>'
 						if (climateChangeIndex > 0){
 							climateChangeIndex = climateChangeIndex - 1;
 						}
-						$(".hexagon").show();
+						$("#flowerfield").show();
 						break;
 					case "rain":
 						eventText = '<div>' + fate.text + '</div>'
+						$('#eventPic').replaceWith("<div class='col-md-12' id='eventPic'><img class='img-responsive img-rounded' src='art/rain400.png' alt='rain'></div>").show();
 						break;
 					case "human":
 						eventText = '<div>' + fate.text + '</div>'
+						$('#eventPic').replaceWith("<div class='col-md-12' id='eventPic'><img class='img-responsive img-rounded' src='art/human400.png' alt='human'></div>").show();
 						break;
 					case "lostGeneticDiversity":
 						eventText = '<div>' + fate.text + '</div>'
+						$('#eventPic').replaceWith("<div class='col-md-12' id='eventPic'><img class='img-responsive img-rounded' src='art/diversity400.png' alt='lost genetic diversity'></div>").show();
 						break;
 					case "malnutrition":
 						eventText = '<div>' + fate.text + '</div>'
+						$('#eventPic').replaceWith("<div class='col-md-12' id='eventPic'><img class='img-responsive img-rounded' src='art/malnutrition400.png' alt='malnutrition'></div>").show();
 						break;						
 					default:
 						$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>Success is the best revenge</div>");
 				}
 
-				dialogueText1 = "<button type='button' class='btn btn-danger active'>Risk</button>";
-				dialogueText2 = "<button type='button' class='btn btn-danger active'>Run</button>";
+				dialogueText1 = "<button type='button' class='btn btn-danger active' id='decision'>Risk</button>";
+				dialogueText2 = "<button type='button' class='btn btn-danger active' id='decision'>Run</button>";
+				dialogueText3 = "<button type='button' class='btn btn-secondary active' id='definition'>Info</button>";
 				
 				spoils = Math.floor(10*Math.random() + 1);
 				riskButton = $(dialogueText1).on("click", function(){
-					$(".hexagon").show();
+					$("#flowerfield").show();
 					switch(fate.name){
 						case "pesticide":
 							if (fateDice > 0.5){
@@ -453,11 +460,13 @@ var controller = function () {
 							if (fateDice > 0.5){
 								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.posEffect.replace(data, spoils) + "</div>");
 								oldMaxEnergy = self.bee()[0].maxEnergyCapacity() + spoils;
-								self.bee()[0].maxEnergy(oldMaxEnergy);
+								self.bee()[0].maxEnergyCapacity(oldMaxEnergy);
 							}
 							else {
 								$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>" + fate.negEffect.replace(data, spoils) + "</div>");
 								phoridIndex = phoridIndex + 1;
+								oldMaxEnergy = self.bee()[0].maxEnergyCapacity() - phoridIndex;
+								self.bee()[0].maxEnergyCapacity(oldMaxEnergy);
 							}
 							break;
 						case "rain":
@@ -516,10 +525,19 @@ var controller = function () {
 						self.bee()[0].pollenCount(self.Backpack.pollenCollected);
 						self.bee()[0].royalPollenCount(self.Backpack.jellyCollected);
 					}
+					$("#eventPic").hide();
 		    	});
+
 		    	runButton = $(dialogueText2).on("click", function(){
 					$('#dialogueWindow').replaceWith("<div id='dialogueWindow'>Safe but hungry</div>");
-					$(".hexagon").show();
+					$("#flowerfield").show();
+					$("#eventPic").hide();
+		    	});
+
+		    	infoButton = $(dialogueText3).on("click", function(){
+					$('#dialogueWindow').append("<p id='definitionText'>" + fate.definition + "</p>");
+					$('#definition').hide();
+
 		    	});
 
 		    	$('#dialogueWindow').append(eventText);
@@ -527,6 +545,7 @@ var controller = function () {
 		    		$('#dialogueWindow').append(riskButton);
 					$('#dialogueWindow').append(runButton);
 		    	}
+		    	$('#dialogueWindow').append(infoButton);
 			}
 			//else statement represents normal pollen harvesting with no interference
 			else {
@@ -564,6 +583,7 @@ var controller = function () {
 		$('#flowerfield').hide();
 		$('.statRow').hide();
 		$('.gameData').hide();
+		$('#eventPicRow').hide();
 		$('.container').append('<div class="row"><div class="col-md-12" id="end">' + results + '</div></div>');
 		var replay = "<button type='button' class='btn btn-danger active'>Play Again</button>";
 		replay = $(replay).on("click", function(){

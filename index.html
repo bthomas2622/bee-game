@@ -52,7 +52,11 @@
                 <div class="col-md-12" id="flowerfield" data-bind="event: {onload: $parent.listClick()}">
                 </div>
             </div>
-             <div class="row gameData">
+            <div class="row" id="eventPicRow">
+                <div class="col-md-12" id="eventPic">
+                </div>
+            </div>
+            <div class="row gameData">
                 <div class="col-md-4 col-sm-4 col-xs-4">
                     <h3>Last Flower Visited</h3>
                     <span id="lastflower"></span>
@@ -101,7 +105,7 @@
                     <div id="hexDemo2">
                         <div style="background-color: white;" class="hexagonDummy"></div>
                     </div>
-                    <p style="margin-bottom:0px">
+                    <p style="margin-bottom:0px;">
                         The black hexagon represents your current position! 
                     </p>
                     <div id="hexDemo2">
@@ -132,7 +136,7 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="font-weight:bold;">Close</button>
               </div>
             </div>
           </div>
