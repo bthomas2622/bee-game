@@ -39,6 +39,7 @@ gulp.task('styles', function(){
         .pipe(minifycss())
         .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest('dist/css'));
+        .pipe(notify({ message: 'CSS task complete' }));
 }); 
 
 // Scripts
@@ -56,9 +57,9 @@ gulp.task('scripts', function() {
 
 // Images
 gulp.task('images', function() {
-  return gulp.src('images/**/*')
+  return gulp.src('art/**/*')
     .pipe(cache(imagemin({ optimizationLevel: 5, progressive: true, interlaced: true })))
-    .pipe(gulp.dest('images/compressed'))
+    .pipe(gulp.dest('dist/art'))
     .pipe(notify({ message: 'Images task complete' }));
 });
 
@@ -139,74 +140,12 @@ gulp.task('resize6', function () {    //540 resize
 
 // Clean
 gulp.task('clean', function(cb) {
-    del(['dist/css', 'dist/js', 'dist/img'], cb)
-});
-
-//tasks for web optimization and clean
-gulp.task('weboptclean', function(cb) {
-    del(['web-optimize/dist/css', 'web-optimize/dist/js', 'web-optimize/dist/images', 'web-optimize/views/dist/images'], cb)
-});
-
-// Scripts for web opt
-gulp.task('weboptscripts', function() {
-  return gulp.src('web-optimize/js/**/*.js')
-    //.pipe(jshint('.jshintrc'))
-    //.pipe(jshint.reporter('default'))
-    .pipe(concat('perfmatters.js'))
-    .pipe(gulp.dest('web-optimize/dist/js'))
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(uglify())
-    .pipe(gulp.dest('web-optimize/dist/js'))
-    .pipe(notify({ message: 'Scripts task complete' }));
-});
-
-// Images
-gulp.task('weboptimages', function() {
-  return gulp.src('web-optimize/img/**/*')
-    .pipe(cache(imagemin({ optimizationLevel: 6, progressive: true, interlaced: true })))
-    .pipe(gulp.dest('web-optimize/dist/images'))
-    .pipe(notify({ message: 'Images task complete' }));
-});
-
-// pizza Images
-gulp.task('pizzaimages', function() {
-  return gulp.src('web-optimize/views/images/**/*')
-    .pipe(cache(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true })))
-    .pipe(gulp.dest('web-optimize/views/dist/images'))
-    .pipe(notify({ message: 'Images task complete' }));
-});
-
-//pizzaresize
-gulp.task('pizzaresize', function () { //540 resize
-  return gulp.src('web-optimize/views/images/pizzeria-780.jpg')
-    .pipe(imageResize({ 
-      width : 300,
-      crop : false,
-      imageMagick : true,
-      upscale : false
-    }))
-    .pipe(rename({ suffix: '-300' }))
-    .pipe(gulp.dest('web-optimize/views/images'));
-});
-
-gulp.task('weboptstyles', function(cb) {
-      return gulp.src('web-optimize/css/*.css')
-        .pipe(autoprefixer({
-          browsers: ['last 2 versions'] //newly added and not tested
-        })) 
-        .pipe(minifycss())
-        .pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest('web-optimize/dist/css'));
-});
-
-// web op Default task
-gulp.task('weboptdefault', function() {   //two parameters, takes name and function
-    gulp.start('weboptstyles', 'weboptimages', 'weboptscripts', 'pizzaimages');
+    del(['dist/css', 'dist/js', 'dist/art'], cb)
 });
 
 // Default task
 gulp.task('default', function() {   //two parameters, takes name and function
-    gulp.start('styles', 'images');
+    gulp.start('styles', 'scripts');
 });
 
 // Watch
@@ -219,7 +158,7 @@ gulp.task('watch', function() {
   gulp.watch('js/**/*.js', ['scripts']); //specify files you want to watch and what tasks you want to run when changes get detected in those files
 
   // Watch image files
-  gulp.watch('images/**/*', ['images']);
+  gulp.watch('art/**/*', ['images']);
 
   // Create LiveReload server
   livereload.listen();
