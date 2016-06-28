@@ -4,7 +4,7 @@ $.ajax({
     jsonp: "callback",
     async: true,
 }).done(function(data, textStatus, jqXHR) {
-    $('#currentWeather').replaceWith('<span id="currentWeather">' + Math.round(data.main.temp_min) + ' &deg;F ' + data.weather[0].description + '</span>');
+    $('#currentWeather').replaceWith('<span id="currentWeather">' + (Math.round(data.main.temp_min) + 2) + ' &deg;F ' + data.weather[0].description + '</span>');
 }).fail(function(){
 	$('#weatherCond').append('<div>Unavailable</div>');
 });
