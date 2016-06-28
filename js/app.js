@@ -63,14 +63,14 @@ var colonyThreats = [
 	{
 	name: 'pesticide',
 	text: 'Neonicotinoid Pesticide present',
-	definition: 'We run this planet dust',	
+	definition: 'We run this planet dust. Fight for the pollen but risk energy.',	
 	posEffect: '%data% pollen obtained',
 	negEffect: 'Overwhelmed, %data% energy has been sapped'
 	},
 	{
 	name: 'varroaMite',
 	text: 'Varroa Mite attacks!',
-	definition: 'External parasitic nightmare',
+	definition: 'External parasitic nightmare. Fight to increase endurance but risk viral infection.',
 	viruses: [{
 			name: 'deformedWingVirus', 
 			negEffect: 'Deformed wing virus has damaged your appendages and reduced energy capacity by %data%', 
@@ -90,14 +90,14 @@ var colonyThreats = [
 	{	
 	name: 'smallHiveBeetle',
 	text: 'Small Hive Beetle attacks!',
-	definition: 'Vile beetle that infests hive, damaging honeycomb, laying larvae that defecate in honey... discoloring with feces. The bee equivalent of a frat party.',
+	definition: 'Vile beetle that infests hive, damaging honeycomb, laying larvae that defecate in honey... discoloring with feces. The bee equivalent of a frat party. Risk honey levels.',
 	negEffect: 'Small Hive Beetle has ransacked the hive and %data% honey has been lost',
 	posEffect: 'Beetle conquered, honey increased by %data%'
 	},
 	{
 	name: 'parasiticPhoridFly',
 	text: 'Parasitic Phorid Fly attacks!',
-	definition: '"Zombie Flies" that lay eggs in your abdomen that slowly grow as you go mad. The larvae emerges from your lifeless carcass through your neck',
+	definition: '"Zombie Flies" that lay eggs in your abdomen that slowly grow as you go mad. The larvae emerges from your lifeless carcass through your neck. Fight to increase your endurance.',
 	negEffect: 'The Parasitic Phorid Fly has successfully implanted egg in your abdomen, max energy will decrease 1 per day. Very Tragic.',
 	posEffect: 'Victory increases max energy by %data%'	
 	},
@@ -109,14 +109,14 @@ var colonyThreats = [
 	{
 	name: 'rain',
 	text: 'Storms a brewin',
-	definition: 'Moisture condensed from the atmosphere that falls visibly in separate drops',
+	definition: 'Moisture condensed from the atmosphere that falls visibly in separate drops. Risk the water washing all your collected pollen.',
 	negEffect: 'An afternoon shower washes away fresh paint, hopscotch, and all your pollen',
 	posEffect: '%data% pollen obtained'	
 	},
 	{
 	name: 'human',
 	text: 'Frenzied child with tennis racket attacks!',
-	definition: 'You are lucky they arent trying to set you on fire.',
+	definition: 'You are lucky they arent trying to set you on fire. Risk it all for glory on the battlefield.',
 	negEffect: 'Your jacked bee body is no match for human recreational activities. Your journey ends here.',
 	posEffect: 'You sting the child in face, take joy in having inflicted lifelong trauma'	
 	},
@@ -130,7 +130,7 @@ var colonyThreats = [
 	{
 	name: 'malnutrition',	
 	text: 'You encounter a field of almonds, be careful not to gorge yourself.',
-	definition: 'A wide variety of pollen leads to stronger bees. Variety is the spice of life.',
+	definition: 'A wide variety of pollen leads to stronger bees. Variety is the spice of life. Risk short term pollen boost.',
 	negEffect: 'A monoculture diet has resulted in 50% less pollen collected',
 	posEffect: '%data% pollen obtained'
 	}

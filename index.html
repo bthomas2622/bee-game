@@ -27,12 +27,12 @@
         </div>
         <div class="container">
             <div class="row statRow">
-                <div class="col-md-4 col-sm-4 col-xs-4">
+                <div class="col-md-4 col-sm-4 col-xs-4 leftStats stats">
                     <ul data-bind="foreach: bee">
                         <li>Species: <span data-bind="text: species"></span></li>
                     </ul>
                 </div>
-                <div class="col-md-4 col-sm-4 col-xs-4">
+                <div class="col-md-4 col-sm-4 col-xs-4 stats">
                     <ul data-bind="foreach: bee">
                         <li>Day: <span data-bind="text: age"></span> / 120</li>
                         <li>Energy: <span data-bind="text: maxEnergy"></span> / <span data-bind="text: maxEnergyCapacity"></span></li>
@@ -40,7 +40,7 @@
                         <li>Royal Pollen Collected: <span data-bind="text: royalPollenCount"></span></li>
                     </ul>
                 </div>
-                <div class="col-md-4 col-sm-4 col-xs-4">
+                <div class="col-md-4 col-sm-4 col-xs-4 rightStats stats">
                     <ul data-bind="foreach: bee">
                         <li>Honey Reserves: <span data-bind="text: honeyCount"></span></li>
                         <li>Royal Jelly Count: <span data-bind="text: royalJellyCount"></span></li>
@@ -57,15 +57,15 @@
                 </div>
             </div>
             <div class="row gameData">
-                <div class="col-md-4 col-sm-4 col-xs-4">
+                <div class="col-md-4 col-sm-4 col-xs-4 stats leftStats">
                     <h3>Last Flower Visited</h3>
                     <span id="lastflower"></span>
                 </div>
-                <div class="col-md-4 col-sm-4 col-xs-4">
+                <div class="col-md-4 col-sm-4 col-xs-4 stats">
                     <h3>Game Dialogue</h3>
                     <div id="dialogueWindow"></div>
                 </div>
-                <div class="col-md-4 col-sm-4 col-xs-4">
+                <div class="col-md-4 col-sm-4 col-xs-4 stats rightStats">
                     <h3 id="weatherCond">Current Oakland Weather</h3>
                     <span id="currentWeather"></span>
                 </div>
@@ -131,7 +131,7 @@
                         The life of a bee is dangerous work. Flying to new locations presents possible dangers. All these dangers combined represent “Colony Collapse Disorder” contributors. 
                     </p>
                     <p>
-                        Whenever an encounter takes place a decision must be made before proceeding. Risk it all for riches and reward, or run to buzz another day.
+                        Whenever an encounter takes place a decision must be made before proceeding. RISK gives you a 50% chance at riches and reward, but beware of the damages defeat can inflict. RUN to buzz another day. You avoid the event and do not collect the fruits of the selected flower.
                     </p>
                 </div>
               </div>

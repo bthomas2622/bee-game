@@ -25,11 +25,11 @@ td {
 
 #flowerfield, #end{
 	width: 500px;
-	margin: 20px auto;
+	margin: 0px auto;
 }
 
 #eventPic {
-	margin: 5px 25%;
+	margin: 0px 30%;
 }
 
 .flower {
@@ -59,30 +59,6 @@ td {
 	font-style: italic;
 	color: #e4a208;
 	font-size: 16px; 
-}
-
-
-/* MEDIA QUERIES */
-
-@media screen and (max-width: 540px) {
-	#end {
-		width: 350px;
-		margin: 20px auto;
-	}
-}
-
-@media screen and (max-width: 780px) and (min-width: 541px) {
-
-}
-
-@media screen and (min-width: 992px) {
-	#flowerfield, #end {
-		width: 500px;
-		margin: 20px 25%;
-	}
-	#eventPic {
-		margin: 5px 25%;
-	}
 }
 
 /* Honeycomb CSS */
@@ -255,4 +231,75 @@ a:hover {
 .hexagonDummy:hover {
 	opacity: .6;
 	cursor: pointer;
+}
+
+.stats {
+	text-align: center;
+}
+
+.leftStats {
+	text-align: right;
+}
+
+.rightStats {
+	text-align: left;
+}
+
+/* MEDIA QUERIES */
+
+@media screen and (max-width: 540px) {
+	#end {
+		width: 350px;
+		margin: 20px auto;
+	}
+	h1, h2, h3, ul, #dialogueWindow, #dialogueWindow div, #currentWeather, #lastflower, #title, #definitionText, #dialogueWindow #decision, .btn {
+		font-size: 10px;
+	}
+
+	* {
+		font-size: 10px;
+	}
+
+	.stats {
+		padding: 0px;
+	}
+}
+
+@media screen and (max-width: 780px) and (min-width: 541px) {
+	h1, h2, h3, #dialogueWindow, #dialogueWindow div, #currentWeather, #lastflower, #title, #definitionText, #dialogueWindow #decision, .btn {
+		font-size: 14px;
+	}
+
+	ul, li {
+		font-size: 12px;
+	}
+
+	* {
+		font-size: 14px;
+	}
+
+	.stats {
+		padding: 0px;
+	}
+}
+
+@media screen and (max-width: 1200px) and (min-width: 992px) {
+	#flowerfield, #end {
+		width: 500px;
+		margin: 0px 25%;
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	#flowerfield, #end {
+		width: 500px;
+		margin-top: 0px;
+		margin-bottom: 0px;
+		margin-left: 30%;
+	}
+
+	#eventPic {
+		margin-top: 0px;
+		margin-left: 35%;
+	}
 }
