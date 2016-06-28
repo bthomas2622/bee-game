@@ -19,10 +19,10 @@ To run this project simply open the "welcomeScreen.html" file in a browser of yo
 
 ## How it was programmed
 
-#### Tools
+###### Tools
 CCD was programmed through JavaScript, HTML, and CSS. The "Bootstrap" front-end web dev framework was utilized for layout, modal, button, and design features. The "Knockout" JS framework was used for declarative bindings, automatic UI refresh, and dependency tracking. The "JQuery" JS framework was used extensively for event driven task and HTML manipulation. The Weather API from OpenWeatherMap is queried to get up to date weather information from Oakland, California. 
 
-#### Design
+###### Design
 I wanted to make a game about bees and Colony Collapse Disorder. I chose hexagons to make up my playing field as they look like honeycombs! It took a lot of research on how to make a hexagonal grid using CSS but I finally go it working. I use a loop to randomly generate the field and coloring of hexagons so that there is a dynamic feel to the game. Each time you return to the hive it's not clear what you will be up to next. I wanted random events with random outcomes to keep the game exciting and fresh. Randomness is a huge theme in games right now and smaller outfits like to use it as a way to add depth to a game without expending large amounts of resources. I tried to use a simple color pallette with tasteful fonts to give the game an appealing look. The pink-purple appearance of the royal jelly yielding flowers should accentuate their importance and rarity. 
 
 #### Directory Structure
