@@ -34,3 +34,11 @@ body {
 #name {
 	margin-top: 30px;
 }
+
+h4 {
+	font-style: italic;
+}
+
+span {
+	color: red;
+}

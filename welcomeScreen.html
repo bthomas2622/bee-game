@@ -6,8 +6,9 @@
         <title>CCD</title>
         <script type="text/javascript" src="js/jquery-1.12.4.js"></script>
         <script type="text/javascript" src="js/bootstrap.js"></script>
+        <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
         <link rel="stylesheet" href="dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="dist/css/welcome.min.css">
+        <link rel="stylesheet" href="css/welcome.css">
         <link rel="stylesheet" href="http://weloveiconfonts.com/api/?family=zocial" />
         <link href='https://fonts.googleapis.com/css?family=Anton' rel='stylesheet' type='text/css'>
     </head>
@@ -20,7 +21,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div>
+                    <div id="info">
                         <p id="bio">
                             It is a pleasant summer in Oakland, California. The sun is shining and all is calm. But all is not well in the world of bees. Occurences of "Disappearing Disease" or "Colony Collapse Disorder" (CCD) were first documented as early as 1869. CCD is suspected when adult bees are absent in an otherwise healthy looking hive that shows no signs of dead bees. The cause of the syndrome has never been fully understood. The National Agriculture Statistics Service reported 2.44 million honey-producing hives in the US in 2008, down from 5.9 million in 1947. You are a young, ambitious worker bee. It is your life mission to conquer the flower fields, defy possible CCD cause agents and bring new queens to the great city of Oakland.
                         </p>
@@ -31,5 +32,15 @@
                 </div>
             </div>
         </div>
+        <script>
+        var rootRef = new Firebase('https://bee-game.firebaseio.com/');
+        var queenRef = rootRef.child("totalqueencount");
+        queenRef.once("value", function(snapshot){
+            var totalqueens = "<h4>" + "<span>" + snapshot.child("total").val() + "</span>" + " Queens produced so far!</h4>";
+            $('#bio').after(totalqueens);
+        }, function (errorObject) {
+            console.log("The total queen update failed: " + errorObject.code);
+        });
+        </script>
     </body>
 </html>
