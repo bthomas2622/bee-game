@@ -1,3 +1,22 @@
+//reference to Firebase database
+var rootRef = new Firebase('https://bee-game.firebaseio.com/');
+
+var leaderRef = rootRef.child("leaderboard");
+var queenRef = rootRef.child("totalqueencount");
+
+leaderRef.once("value", function(snapshot){
+	console.log(snapshot.child("one").child("name").val())
+}, function (errorObject) {
+	console.log("The read failed: " + errorObject.code);
+});
+
+queenRef.once("value", function(snapshot){
+	console.log(snapshot.child("total").val());
+}, function (errorObject) {
+	console.log("The total queen update failed: " + errorObject.code);
+});
+
+
 /*the beeTypes object contains the information for all of possible bee species that the 
 model can make observable and the controller and associated functions can manipulate */
 var beeTypes = [
@@ -147,6 +166,8 @@ var data = '%data%';
 var phoridIndex = 0;
 var totalHoney = 0;
 var totalJelly = 0; 
+var leaderOne = 0, leaderTwo, leaderThree, leaderFour, leaderFive;
+var leaderOneName, leaderTwoName, leaderThreeName, leaderFourName, leaderFiveName;
 
 //beemodel is the knockout observable model object that will dynamically drive my in game statistics
 var beeModel = function(data){
@@ -565,6 +586,14 @@ var controller = function () {
 		results = results.replace('%hdata%', totalHoney);
 		results = results.replace('%rdata%', totalJelly);
 		results = results.replace('%qdata%', self.bee()[0].queenCount());
+		queenRef.once("value", function(snapshot){
+			var queenCountToUpdate = snapshot.child("total").val();
+			queenRef.update({
+				"total": (queenCountToUpdate + 1)
+			});
+		}, function (errorObject) {
+			console.log("The total queen update failed: " + errorObject.code);
+		});
 		switch(cause){
 			case "honey":
 				results = results.replace('%reasondeath%', "Without honey, you cannot produce energy to continue")
@@ -590,6 +619,24 @@ var controller = function () {
 			location.reload();
 		})
 		$('#end').append(replay);
+
+		//getting the info for leaderboard
+		leaderRef.once("value", function(snapshot){
+			leaderOne = snapshot.child("one").child("score").val()
+			leaderOneName = snapshot.child("one").child("name").val();
+			leaderTwo = snapshot.child("one").child("score").val();
+			leaderTwoName = snapshot.child("one").child("name").val();
+			leaderThree = snapshot.child("one").child("score").val();
+			leaderThreeName = snapshot.child("one").child("name").val();
+			leaderFour = snapshot.child("one").child("score").val();
+			leaderFourName = snapshot.child("one").child("name").val();
+			leaderFive = snapshot.child("one").child("score").val();
+			leaderFiveName = snapshot.child("one").child("name").val();
+			var leaderboard = "<h1>LEADERBOARD</h1><ol><li>Name: " + leaderOneName + " - " + leaderOne + "</li><li>Name: " + leaderTwoName + " - " + leaderTwo + "</li><li>Name: " + leaderThreeName + " - " + leaderThree + "</li><li>Name: " + leaderFourName + " - " + leaderFour + "</li><li>Name: " + leaderFiveName + " - " + leaderFive + "</li></ol>";
+			$('#end').append(leaderboard);
+		}, function (errorObject) {
+			console.log("Could not fetch leaderboard: " + errorObject.code);
+		});
 	}
 };
 
