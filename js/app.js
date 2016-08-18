@@ -4,6 +4,7 @@ var rootRef = new Firebase('https://bee-game.firebaseio.com/');
 var leaderRef = rootRef.child("leaderboard");
 var queenRef = rootRef.child("totalqueencount");
 
+//test code to debug firebase
 leaderRef.once("value", function(snapshot){
 	console.log(snapshot.child("one").child("name").val())
 }, function (errorObject) {
@@ -16,6 +17,17 @@ queenRef.once("value", function(snapshot){
 	console.log("The total queen update failed: " + errorObject.code);
 });
 
+// leaderRef.child("one").update({
+// 	"name": "Benjammin",
+// 	"score": 3
+// }, function (errorObject) {
+// 	if (errorObject){
+// 		console.log("The leaderboard update failed: " + errorObject)
+// 	}
+// 	else {
+// 		console.log("The leaderboard updated successfully");
+// 	}
+// });
 
 /*the beeTypes object contains the information for all of possible bee species that the 
 model can make observable and the controller and associated functions can manipulate */
@@ -589,7 +601,7 @@ var controller = function () {
 		queenRef.once("value", function(snapshot){
 			var queenCountToUpdate = snapshot.child("total").val();
 			queenRef.update({
-				"total": (queenCountToUpdate + 1)
+				"total": (queenCountToUpdate + self.bee()[0].queenCount())
 			});
 		}, function (errorObject) {
 			console.log("The total queen update failed: " + errorObject.code);
@@ -632,8 +644,28 @@ var controller = function () {
 			leaderFourName = snapshot.child("one").child("name").val();
 			leaderFive = snapshot.child("one").child("score").val();
 			leaderFiveName = snapshot.child("one").child("name").val();
-			var leaderboard = "<h1>LEADERBOARD</h1><ol><li>Name: " + leaderOneName + " - " + leaderOne + "</li><li>Name: " + leaderTwoName + " - " + leaderTwo + "</li><li>Name: " + leaderThreeName + " - " + leaderThree + "</li><li>Name: " + leaderFourName + " - " + leaderFour + "</li><li>Name: " + leaderFiveName + " - " + leaderFive + "</li></ol>";
-			$('#end').append(leaderboard);
+			if (self.bee()[0].queenCount() > leaderFive) {
+				var playerName = prompt("Congratulations!! Your 'Queens Produced' score is in top 5 of all CCD scores! Please enter your name for the leaderboard");
+				if (person != null) {
+					if (self.bee()[0].queenCount() < leaderFour) {
+						leaderRef.child("five").update({
+							"name": playerName,
+							"score": self.bee()[0].queenCount()
+						}, function (errorObject) {
+							if (errorObject){
+								console.log("The leaderboard update failed: " + errorObject)
+							}
+							else {
+								console.log("The leaderboard updated successfully");
+							}
+						});
+					}
+				}
+			}
+			else {
+				var leaderboard = "<h1>LEADERBOARD</h1><ol><li>Name: " + leaderOneName + " - " + leaderOne + "</li><li>Name: " + leaderTwoName + " - " + leaderTwo + "</li><li>Name: " + leaderThreeName + " - " + leaderThree + "</li><li>Name: " + leaderFourName + " - " + leaderFour + "</li><li>Name: " + leaderFiveName + " - " + leaderFive + "</li></ol>";
+				$('#end').append(leaderboard);	
+			}
 		}, function (errorObject) {
 			console.log("Could not fetch leaderboard: " + errorObject.code);
 		});
