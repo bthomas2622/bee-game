@@ -180,6 +180,7 @@ var totalHoney = 0;
 var totalJelly = 0; 
 var leaderOne = 0, leaderTwo, leaderThree, leaderFour, leaderFive;
 var leaderOneName, leaderTwoName, leaderThreeName, leaderFourName, leaderFiveName;
+var playerName;
 
 //beemodel is the knockout observable model object that will dynamically drive my in game statistics
 var beeModel = function(data){
@@ -636,18 +637,18 @@ var controller = function () {
 		leaderRef.once("value", function(snapshot){
 			leaderOne = snapshot.child("one").child("score").val()
 			leaderOneName = snapshot.child("one").child("name").val();
-			leaderTwo = snapshot.child("one").child("score").val();
-			leaderTwoName = snapshot.child("one").child("name").val();
-			leaderThree = snapshot.child("one").child("score").val();
-			leaderThreeName = snapshot.child("one").child("name").val();
-			leaderFour = snapshot.child("one").child("score").val();
-			leaderFourName = snapshot.child("one").child("name").val();
-			leaderFive = snapshot.child("one").child("score").val();
-			leaderFiveName = snapshot.child("one").child("name").val();
+			leaderTwo = snapshot.child("two").child("score").val();
+			leaderTwoName = snapshot.child("two").child("name").val();
+			leaderThree = snapshot.child("three").child("score").val();
+			leaderThreeName = snapshot.child("three").child("name").val();
+			leaderFour = snapshot.child("four").child("score").val();
+			leaderFourName = snapshot.child("four").child("name").val();
+			leaderFive = snapshot.child("five").child("score").val();
+			leaderFiveName = snapshot.child("five").child("name").val();
 			if (self.bee()[0].queenCount() > leaderFive) {
-				var playerName = prompt("Congratulations!! Your 'Queens Produced' score is in top 5 of all CCD scores! Please enter your name for the leaderboard");
-				if (person != null) {
-					if (self.bee()[0].queenCount() < leaderFour) {
+				playerName = prompt("Congratulations!! Your 'Queens Produced' score is in top 5 of all CCD scores! Please enter your name for the leaderboard");
+				if (playerName != null) {
+					if (self.bee()[0].queenCount() <= leaderFour) {
 						leaderRef.child("five").update({
 							"name": playerName,
 							"score": self.bee()[0].queenCount()
@@ -659,11 +660,205 @@ var controller = function () {
 								console.log("The leaderboard updated successfully");
 							}
 						});
+						leaderFiveName = playerName;
+						leaderFive = self.bee()[0].queenCount();
+					}
+					else if (self.bee()[0].queenCount() <= leaderThree) {
+						leaderRef.child("five").update({
+							"name": leaderFourName,
+							"score": leaderFour
+						}, function (errorObject) {
+							if (errorObject){
+								console.log("The leaderboard update failed: " + errorObject)
+							}
+							else {
+								console.log("The leaderboard updated successfully");
+							}
+						});
+						leaderRef.child("four").update({
+							"name": playerName,
+							"score": self.bee()[0].queenCount()
+						}, function (errorObject) {
+							if (errorObject){
+								console.log("The leaderboard update failed: " + errorObject)
+							}
+							else {
+								console.log("The leaderboard updated successfully");
+							}
+						});
+						leaderFiveName = leaderFourName;
+						leaderFive = leaderFour;
+						leaderFourName = playerName;
+						leaderFour = self.bee()[0].queenCount();
+					}
+					else if (self.bee()[0].queenCount() <= leaderTwo) {
+						leaderRef.child("five").update({
+							"name": leaderFourName,
+							"score": leaderFour
+						}, function (errorObject) {
+							if (errorObject){
+								console.log("The leaderboard update failed: " + errorObject)
+							}
+							else {
+								console.log("The leaderboard updated successfully");
+							}
+						});
+						leaderRef.child("four").update({
+							"name": leaderThreeName,
+							"score": leaderThree
+						}, function (errorObject) {
+							if (errorObject){
+								console.log("The leaderboard update failed: " + errorObject)
+							}
+							else {
+								console.log("The leaderboard updated successfully");
+							}
+						});
+						leaderRef.child("three").update({
+							"name": playerName,
+							"score": self.bee()[0].queenCount()
+						}, function (errorObject) {
+							if (errorObject){
+								console.log("The leaderboard update failed: " + errorObject)
+							}
+							else {
+								console.log("The leaderboard updated successfully");
+							}
+						});
+						leaderFiveName = leaderFourName;
+						leaderFive = leaderFour;
+						leaderFourName = leaderThreeName;
+						leaderFour = leaderThree;
+						leaderThreeName = playerName;
+						leaderThree = self.bee()[0].queenCount();
+					}
+					else if (self.bee()[0].queenCount() <= leaderOne) {
+						leaderRef.child("five").update({
+							"name": leaderFourName,
+							"score": leaderFour
+						}, function (errorObject) {
+							if (errorObject){
+								console.log("The leaderboard update failed: " + errorObject)
+							}
+							else {
+								console.log("The leaderboard updated successfully");
+							}
+						});
+						leaderRef.child("four").update({
+							"name": leaderThreeName,
+							"score": leaderThree
+						}, function (errorObject) {
+							if (errorObject){
+								console.log("The leaderboard update failed: " + errorObject)
+							}
+							else {
+								console.log("The leaderboard updated successfully");
+							}
+						});
+						leaderRef.child("three").update({
+							"name": leaderTwoName,
+							"score": leaderTwo
+						}, function (errorObject) {
+							if (errorObject){
+								console.log("The leaderboard update failed: " + errorObject)
+							}
+							else {
+								console.log("The leaderboard updated successfully");
+							}
+						});
+						leaderRef.child("two").update({
+							"name": playerName,
+							"score": self.bee()[0].queenCount()
+						}, function (errorObject) {
+							if (errorObject){
+								console.log("The leaderboard update failed: " + errorObject)
+							}
+							else {
+								console.log("The leaderboard updated successfully");
+							}
+						});
+						leaderFiveName = leaderFourName;
+						leaderFive = leaderFour;
+						leaderFourName = leaderThreeName;
+						leaderFour = leaderThree;
+						leaderThreeName = leaderTwoName;
+						leaderThree = leaderTwo;
+						leaderTwoName = playerName;
+						leaderTwo = self.bee()[0].queenCount();
+					}
+					else {
+						leaderRef.child("five").update({
+							"name": leaderFourName,
+							"score": leaderFour
+						}, function (errorObject) {
+							if (errorObject){
+								console.log("The leaderboard update failed: " + errorObject)
+							}
+							else {
+								console.log("The leaderboard updated successfully");
+							}
+						});
+						leaderRef.child("four").update({
+							"name": leaderThreeName,
+							"score": leaderThree
+						}, function (errorObject) {
+							if (errorObject){
+								console.log("The leaderboard update failed: " + errorObject)
+							}
+							else {
+								console.log("The leaderboard updated successfully");
+							}
+						});
+						leaderRef.child("three").update({
+							"name": leaderTwoName,
+							"score": leaderTwo
+						}, function (errorObject) {
+							if (errorObject){
+								console.log("The leaderboard update failed: " + errorObject)
+							}
+							else {
+								console.log("The leaderboard updated successfully");
+							}
+						});
+						leaderRef.child("two").update({
+							"name": leaderOneName,
+							"score": leaderOne
+						}, function (errorObject) {
+							if (errorObject){
+								console.log("The leaderboard update failed: " + errorObject)
+							}
+							else {
+								console.log("The leaderboard updated successfully");
+							}
+						});
+						leaderRef.child("one").update({
+							"name": playerName,
+							"score": self.bee()[0].queenCount()
+						}, function (errorObject) {
+							if (errorObject){
+								console.log("The leaderboard update failed: " + errorObject)
+							}
+							else {
+								console.log("The leaderboard updated successfully");
+							}
+						});
+						leaderFiveName = leaderFourName;
+						leaderFive = leaderFour;
+						leaderFourName = leaderThreeName;
+						leaderFour = leaderThree;
+						leaderThreeName = leaderTwoName;
+						leaderThree = leaderTwo;
+						leaderTwoName = leaderOneName;
+						leaderTwo = leaderOne;
+						leaderOneName = playerName;
+						leaderOne = self.bee()[0].queenCount();
 					}
 				}
+				var leaderboard = "<h1>QUEEN LEADERBOARD</h1><ol><li>Name: " + leaderOneName + " - " + leaderOne + "</li><li>Name: " + leaderTwoName + " - " + leaderTwo + "</li><li>Name: " + leaderThreeName + " - " + leaderThree + "</li><li>Name: " + leaderFourName + " - " + leaderFour + "</li><li>Name: " + leaderFiveName + " - " + leaderFive + "</li></ol>";
+				$('#end').append(leaderboard);
 			}
 			else {
-				var leaderboard = "<h1>LEADERBOARD</h1><ol><li>Name: " + leaderOneName + " - " + leaderOne + "</li><li>Name: " + leaderTwoName + " - " + leaderTwo + "</li><li>Name: " + leaderThreeName + " - " + leaderThree + "</li><li>Name: " + leaderFourName + " - " + leaderFour + "</li><li>Name: " + leaderFiveName + " - " + leaderFive + "</li></ol>";
+				var leaderboard = "<h1>QUEEN LEADERBOARD</h1><ol><li>Name: " + leaderOneName + " - " + leaderOne + "</li><li>Name: " + leaderTwoName + " - " + leaderTwo + "</li><li>Name: " + leaderThreeName + " - " + leaderThree + "</li><li>Name: " + leaderFourName + " - " + leaderFour + "</li><li>Name: " + leaderFiveName + " - " + leaderFive + "</li></ol>";
 				$('#end').append(leaderboard);	
 			}
 		}, function (errorObject) {

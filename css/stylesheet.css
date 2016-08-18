@@ -109,6 +109,15 @@ h1, h2 {
 	margin-top: 5px;
 }
 
+#end h1 {
+	padding-top: 10px;
+	text-align: center;
+}
+
+#end button {
+	margin-left: 40%;
+}
+
 #help:hover {
 	cursor: pointer;
 	color: black;
@@ -262,6 +271,10 @@ a:hover {
 
 	.stats {
 		padding: 0px;
+	}
+
+	#end h1 {
+	padding-top: 5px;
 	}
 }
 
