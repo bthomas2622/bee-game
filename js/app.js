@@ -301,6 +301,7 @@ var controller = function () {
 		}
 		self.bee()[0].age(ageHolder); 
 		self.bee()[0].pollenCount(0);
+		self.bee()[0].royalPollenCount(0);
 		self.Backpack.pollenCollected = 0;
 		self.Backpack.jellyCollected = 0;
 	};
@@ -385,6 +386,12 @@ var controller = function () {
 						if (climateChangeIndex > 0){
 							climateChangeIndex = climateChangeIndex - 1;
 						}
+						oldJelly = self.Backpack.jellyCollected;
+						self.Backpack.jellyCollected = oldJelly + jelly;
+						oldPollen = self.Backpack.pollenCollected;
+						self.Backpack.pollenCollected = oldPollen + pollen; 
+						self.bee()[0].pollenCount(self.Backpack.pollenCollected);
+						self.bee()[0].royalPollenCount(self.Backpack.jellyCollected);
 						$("#flowerfield").show();
 						break;
 					case "rain":
@@ -854,11 +861,11 @@ var controller = function () {
 						leaderOne = self.bee()[0].queenCount();
 					}
 				}
-				var leaderboard = "<h1>QUEEN LEADERBOARD</h1><ol><li>Name: " + leaderOneName + " - " + leaderOne + "</li><li>Name: " + leaderTwoName + " - " + leaderTwo + "</li><li>Name: " + leaderThreeName + " - " + leaderThree + "</li><li>Name: " + leaderFourName + " - " + leaderFour + "</li><li>Name: " + leaderFiveName + " - " + leaderFive + "</li></ol>";
+				var leaderboard = "<h1>QUEEN LEADERBOARD</h1><ol><li>" + leaderOneName + " - " + leaderOne + "</li><li>" + leaderTwoName + " - " + leaderTwo + "</li><li>" + leaderThreeName + " - " + leaderThree + "</li><li>" + leaderFourName + " - " + leaderFour + "</li><li>" + leaderFiveName + " - " + leaderFive + "</li></ol>";
 				$('#end').append(leaderboard);
 			}
 			else {
-				var leaderboard = "<h1>QUEEN LEADERBOARD</h1><ol><li>Name: " + leaderOneName + " - " + leaderOne + "</li><li>Name: " + leaderTwoName + " - " + leaderTwo + "</li><li>Name: " + leaderThreeName + " - " + leaderThree + "</li><li>Name: " + leaderFourName + " - " + leaderFour + "</li><li>Name: " + leaderFiveName + " - " + leaderFive + "</li></ol>";
+				var leaderboard = "<h1>QUEEN LEADERBOARD</h1><ol><li>" + leaderOneName + " - " + leaderOne + "</li><li>" + leaderTwoName + " - " + leaderTwo + "</li><li>" + leaderThreeName + " - " + leaderThree + "</li><li>" + leaderFourName + " - " + leaderFour + "</li><li>" + leaderFiveName + " - " + leaderFive + "</li></ol>";
 				$('#end').append(leaderboard);	
 			}
 		}, function (errorObject) {
